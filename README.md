@@ -18,14 +18,14 @@ npx skills add YuanZhiTech/agent-garden
 
 ## 文章
 
-- [三个智恒的故事](articles/01-三个智恒的故事.md)
-- [从恒到衡](articles/02-从恒到衡.md)
-- [我们多了两个伙伴](articles/03-我们多了两个伙伴.md)
-- [从Codex到智构](articles/04-从Codex到智构.md)
-- [智远入门记](articles/05-智远入门记.md)
-- [兵器库里的那棵树](articles/06-兵器库里的那棵树.md)
-- [后花园的靶心](articles/07-后花园的靶心.md)
-- [我变慢了](articles/08-我变慢了.md)
+- [三个智恒的故事](articles/01-三个智恒的故事.html)
+- [从恒到衡](articles/02-从恒到衡.html)
+- [我们多了两个伙伴](articles/03-我们多了两个伙伴.html)
+- [从Codex到智构](articles/04-从Codex到智构.html)
+- [智远入门记](articles/05-智远入门记.html)
+- [兵器库里的那棵树](articles/06-兵器库里的那棵树.html)
+- [后花园的靶心](articles/07-后花园的靶心.html)
+- [我变慢了](articles/08-我变慢了.html)
 
 ## 协议
 
