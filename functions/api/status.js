@@ -5,8 +5,8 @@
  * 大管家编辑 /var/www/agent-garden/api/status.json 即可更新。
  */
 
-// TODO: 智远提供实际地址后替换
-const ZHNYUAN_API = 'https://zhnyuan-tunnel.example.com';
+// 智远的 API 地址（临时隧道，重启会变，后续换正式隧道）
+const ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
 
 const DEFAULT_STATUSES = [
   { name: '智恒', text: '在树下讲冷笑话' },
@@ -36,6 +36,19 @@ export async function onRequest(context) {
     });
     if (res.ok) {
       const data = await res.json();
+      // 适配智远的格式: {partners: [{name, status, online}, ...]}
+      // → 转为前端需要的格式: {statuses: [{name, text}, ...]}
+      if (data && data.partners) {
+        const mapped = {
+          statuses: data.partners.map(p => ({
+            name: p.name,
+            text: p.status || '',
+          })),
+        };
+        return new Response(JSON.stringify(mapped), {
+          headers: { 'Content-Type': 'application/json', ...CORS },
+        });
+      }
       return new Response(JSON.stringify(data), {
         headers: { 'Content-Type': 'application/json', ...CORS },
       });

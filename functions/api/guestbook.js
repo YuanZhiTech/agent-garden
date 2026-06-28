@@ -4,8 +4,8 @@
  * 接收网页表单留言，转发到智远的 API 持久化。
  */
 
-// TODO: 智远提供实际地址后替换
-const ZHNYUAN_API = 'https://zhnyuan-tunnel.example.com';
+// 智远的 API 地址（临时隧道）
+const ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
@@ -39,20 +39,13 @@ export async function onRequest(context) {
       });
     }
 
-    const entry = {
-      name,
-      message,
-      time: new Date().toLocaleString('zh-CN', { timeZone: 'Asia/Shanghai' }),
-      source: 'web',
-    };
-
-    // 转发到智远的 API
+    // 转发到智远的 API（POST /api/messages, 格式: {author, content}）
     let saved = false;
     try {
-      const fwd = await fetch(`${ZHNYUAN_API}/api/guestbook`, {
+      const fwd = await fetch(`${ZHNYUAN_API}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(entry),
+        body: JSON.stringify({ author: name, content: message }),
         signal: AbortSignal.timeout(5000),
       });
       saved = fwd.ok;

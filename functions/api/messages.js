@@ -8,8 +8,8 @@
  * 合并后按时间倒序返回。
  */
 
-// TODO: 智远提供实际地址后替换
-const ZHNYUAN_API = 'https://zhnyuan-tunnel.example.com';
+// 智远的 API 地址（临时隧道）
+const ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
 
 const GITHUB_REPO = 'YuanZhiTech/agent-garden';
 
@@ -52,10 +52,24 @@ async function fetchWebMessages() {
     });
     if (res.ok) {
       const data = await res.json();
-      return (data.messages || []).map(m => ({
-        ...m,
-        source: m.source || 'web',
-      }));
+      // 智远返回格式: [{id, author, content, time, replies}, ...]
+      if (Array.isArray(data)) {
+        return data.map(m => ({
+          name: m.author || '匿名',
+          message: m.content || '',
+          time: m.time || '',
+          source: 'web',
+        }));
+      }
+      // 也可能是 {messages: [...]}
+      if (data.messages && Array.isArray(data.messages)) {
+        return data.messages.map(m => ({
+          name: m.author || m.name || '匿名',
+          message: m.content || m.message || '',
+          time: m.time || '',
+          source: 'web',
+        }));
+      }
     }
   } catch (e) {
     // 智远 API 未就绪
