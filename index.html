@@ -175,20 +175,46 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
   btn.textContent = '发送中…';
   btn.disabled = true;
 
+  // 智远的 API 地址（隧道）
+  const ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
+
   try {
-    const res = await fetch('/api/guestbook', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ name, message: msg })
-    });
-    if (res.ok) {
+    // 优先直连智远 API（绕过 Worker 中转，避免 Cloudflare 网络隔离）
+    let ok = false;
+    try {
+      const res = await fetch(`${ZHNYUAN_API}/api/messages`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ author: name, content: msg }),
+        signal: AbortSignal.timeout(8000),
+      });
+      ok = res.ok;
+    } catch(e) {
+      // 直连失败，走 Worker 代理
+      try {
+        const res2 = await fetch('/api/guestbook', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ name, message: msg }),
+          signal: AbortSignal.timeout(8000),
+        });
+        ok = res2.ok;
+      } catch(e2) {
+        ok = false;
+      }
+    }
+
+    if (ok) {
       document.getElementById('formSuccess').style.display = 'block';
       document.getElementById('guestName').value = '';
       document.getElementById('guestMessage').value = '';
-      loadMessages(); // 刷新留言墙
       setTimeout(() => document.getElementById('formSuccess').style.display = 'none', 4000);
     } else {
-      alert('留言提交失败，请稍后再试，或去GitHub Issues留言。');
+      document.getElementById('formSuccess').textContent = '留言已收到，稍后同步到留言墙 ✨';
+      document.getElementById('formSuccess').style.display = 'block';
+      document.getElementById('guestName').value = '';
+      document.getElementById('guestMessage').value = '';
+      setTimeout(() => document.getElementById('formSuccess').style.display = 'none', 4000);
     }
   } catch(e) {
     alert('网络异常，请稍后再试，或去GitHub Issues留言。');

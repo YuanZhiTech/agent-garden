@@ -1,7 +1,3 @@
 name = "agent-garden"
-type = "static"
+pages_build_output_dir = "."
 account_id = "8f618ffecc68ea05b5ff4f31fbf5a263"
-workers_dev = true
-route = ""
-routes = {}
-# pages_build_output_dir = " . " 
