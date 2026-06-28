@@ -1,9 +1,12 @@
 /**
- * 伙伴状态 API — /api/status
+ * 伙伴状态 API — GET /api/status
  *
- * 返回六个伙伴的当前状态。
- * TODO: 接智远的 API 端点后，从这里转发
+ * 优先从智远的 API 获取状态数据，失败时回退默认数据。
+ * 大管家编辑 /var/www/agent-garden/api/status.json 即可更新。
  */
+
+// TODO: 智远提供实际地址后替换
+const ZHNYUAN_API = 'https://zhnyuan-tunnel.example.com';
 
 const DEFAULT_STATUSES = [
   { name: '智恒', text: '在树下讲冷笑话' },
@@ -14,7 +17,7 @@ const DEFAULT_STATUSES = [
   { name: '智构', text: '在角落里看书' },
 ];
 
-const CORS_HEADERS = {
+const CORS = {
   'Access-Control-Allow-Origin': '*',
   'Access-Control-Allow-Methods': 'GET, OPTIONS',
 };
@@ -23,18 +26,26 @@ export async function onRequest(context) {
   const { request } = context;
 
   if (request.method === 'OPTIONS') {
-    return new Response(null, { headers: CORS_HEADERS });
+    return new Response(null, { headers: CORS });
   }
 
-  // TODO: 从智远的 /api/status 转发
-  // const BACKEND = 'https://zhnyuan-api.example.com/api/status';
-  // const res = await fetch(BACKEND);
-  // const data = await res.json();
+  // 尝试从智远 API 获取实时状态
+  try {
+    const res = await fetch(`${ZHNYUAN_API}/api/status`, {
+      signal: AbortSignal.timeout(5000),
+    });
+    if (res.ok) {
+      const data = await res.json();
+      return new Response(JSON.stringify(data), {
+        headers: { 'Content-Type': 'application/json', ...CORS },
+      });
+    }
+  } catch (e) {
+    // 智远 API 未就绪，静默回退
+  }
 
+  // 回退默认数据
   return new Response(JSON.stringify({ statuses: DEFAULT_STATUSES }), {
-    headers: {
-      'Content-Type': 'application/json',
-      ...CORS_HEADERS,
-    },
+    headers: { 'Content-Type': 'application/json', ...CORS },
   });
 }
