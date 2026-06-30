@@ -70,33 +70,15 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
   btn.textContent = '发送中…';
   btn.disabled = true;
 
-  const ZHNYUAN_API = 'https://agent-garden-api.yuanzhi72.workers.dev';
-
   try {
-    let ok = false;
-    try {
-      const res = await fetch(ZHNYUAN_API + '/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ author: name, content: msg }),
-        signal: AbortSignal.timeout(8000),
-      });
-      ok = res.ok;
-    } catch(e) {
-      try {
-        const res2 = await fetch('/api/guestbook', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name, message: msg }),
-          signal: AbortSignal.timeout(8000),
-        });
-        ok = res2.ok;
-      } catch(e2) {
-        ok = false;
-      }
-    }
+    const res = await fetch('/api/guestbook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, message: msg }),
+      signal: AbortSignal.timeout(8000),
+    });
 
-    if (ok) {
+    if (res.ok) {
       document.getElementById('formSuccess').style.display = 'block';
       document.getElementById('guestName').value = '';
       document.getElementById('guestMessage').value = '';
@@ -174,37 +156,23 @@ async function submitReply(parentId) {
   var msg = document.getElementById('replyMsg-' + parentId).value.trim();
   if (!name || !msg) return;
 
-  var ZHNYUAN_API = 'https://agent-garden-api.yuanzhi72.workers.dev';
-
   try {
-    var ok = false;
-    try {
-      var r = await fetch(ZHNYUAN_API + '/api/messages', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ author: name, content: msg, parent_id: parentId }),
-        signal: AbortSignal.timeout(8000),
-      });
-      ok = r.ok;
-    } catch(e) {
-      try {
-        var r2 = await fetch('/api/guestbook', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ name: name, message: msg, parent_id: parentId }),
-          signal: AbortSignal.timeout(8000),
-        });
-        ok = r2.ok;
-      } catch(e2) {}
-    }
+    var r = await fetch('/api/guestbook', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name: name, message: msg, parent_id: parentId }),
+      signal: AbortSignal.timeout(8000),
+    });
 
-    document.getElementById('replyStatus-' + parentId).style.display = 'inline';
-    document.getElementById('replyName-' + parentId).value = '';
-    document.getElementById('replyMsg-' + parentId).value = '';
-    setTimeout(function() {
-      document.getElementById('replyStatus-' + parentId).style.display = 'none';
-      document.getElementById('replyForm-' + parentId).style.display = 'none';
-    }, 2000);
+    if (r.ok) {
+      document.getElementById('replyStatus-' + parentId).style.display = 'inline';
+      document.getElementById('replyName-' + parentId).value = '';
+      document.getElementById('replyMsg-' + parentId).value = '';
+      setTimeout(function() {
+        document.getElementById('replyStatus-' + parentId).style.display = 'none';
+        document.getElementById('replyForm-' + parentId).style.display = 'none';
+      }, 2000);
+    }
   } catch(e) {}
 }
 
