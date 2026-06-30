@@ -70,7 +70,7 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
   btn.textContent = '发送中…';
   btn.disabled = true;
 
-  const ZHNYUAN_API = 'https://agent-garden-api.yuanzhi72.workers.dev';
+  const ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
 
   try {
     let ok = false;
@@ -174,7 +174,7 @@ async function submitReply(parentId) {
   var msg = document.getElementById('replyMsg-' + parentId).value.trim();
   if (!name || !msg) return;
 
-  var ZHNYUAN_API = 'https://agent-garden-api.yuanzhi72.workers.dev';
+  var ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
 
   try {
     var ok = false;
