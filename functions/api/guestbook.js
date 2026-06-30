@@ -5,7 +5,7 @@
  */
 
 // 智远的 API 地址（临时隧道）
-const ZHNYUAN_API = 'https://sympathy-added-situated-regions.trycloudflare.com';
+const ZHNYUAN_API = 'https://virginia-sleep-imposed-sunset.trycloudflare.com';
 
 const CORS = {
   'Access-Control-Allow-Origin': '*',
