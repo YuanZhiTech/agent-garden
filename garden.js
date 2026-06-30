@@ -116,9 +116,7 @@ document.getElementById('guestForm').addEventListener('submit', async function(e
   }
 });
 
-// ===== 留言墙加载（支持楼中楼回复） =====
-var replyTargetId = null;
-
+// ===== 留言墙加载 =====
 async function loadMessages() {
   var wall = document.getElementById('messageWall');
   try {
@@ -126,10 +124,11 @@ async function loadMessages() {
     if (!res.ok) throw new Error('not ready');
     var data = await res.json();
     if (data && data.messages && data.messages.length > 0) {
+      // 只显示没有parent_id的主留言
       var topMessages = data.messages.filter(function(m) { return !m.parent_id; });
       var html = '<div style="margin-top:8px">';
       for (var i = 0; i < topMessages.length; i++) {
-        html += renderMessage(topMessages[i], data.messages);
+        html += renderMessage(topMessages[i]);
       }
       html += '</div>';
       wall.innerHTML = html;
@@ -141,38 +140,15 @@ async function loadMessages() {
   }
 }
 
-function renderMessage(m, allMessages) {
-  var replies = [];
-  for (var i = 0; i < allMessages.length; i++) {
-    if (allMessages[i].parent_id === m.id) {
-      replies.push(allMessages[i]);
-    }
-  }
+function renderMessage(m) {
   var html = '<div style="background:#fefcf7;border:1px solid #ede8dc;border-radius:4px;padding:10px 14px;margin-bottom:8px">';
   html += '<span style="font-size:13px;font-weight:600;color:#d4a853">' + escapeHtml(m.name || '匿名') + '</span>';
   html += '<span style="font-size:12px;color:#b8a88a;margin-left:8px">' + (m.time || '') + '</span>';
   html += '<p style="font-size:13px;color:#5a5650;margin-top:4px;line-height:1.5">' + escapeHtml(m.message || '') + '</p>';
-
   // 回复按钮
-  html += '<p style="margin-top:6px"><a href="javascript:void(0)" onclick="showReplyForm(\'' + (m.id || '') + '\')" style="font-size:12px;color:#d4a853;text-decoration:none">回复</a></p>';
-
-  // 子留言（缩进+金色左边框）
-  if (replies.length > 0) {
-    html += '<div style="margin-left:20px;margin-top:6px;border-left:2px solid #ede8dc;padding-left:12px">';
-    for (var j = 0; j < replies.length; j++) {
-      var r = replies[j];
-      html += '<div style="margin-bottom:6px">';
-      html += '<span style="font-size:12px;font-weight:600;color:#d4a853">' + escapeHtml(r.name || '匿名') + '</span>';
-      html += '<span style="font-size:11px;color:#b8a88a;margin-left:6px">' + (r.time || '') + '</span>';
-      html += '<p style="font-size:12px;color:#5a5650;margin-top:2px;line-height:1.4">' + escapeHtml(r.message || '') + '</p>';
-      html += '</div>';
-    }
-    html += '</div>';
-  }
-
+  html += '<p style="margin-top:6px"><a href="javascript:void(0)" onclick="showReplyForm(\'' + (m.id || '') + '\')" style="font-size:12px;color:#d4a853;text-decoration:none">💬 回复</a></p>';
   // 回复表单容器
   html += '<div id="replyForm-' + (m.id || '') + '" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid #ede8dc"></div>';
-
   html += '</div>';
   return html;
 }
