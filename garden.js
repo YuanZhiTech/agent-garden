@@ -141,14 +141,15 @@ async function loadMessages() {
 }
 
 function renderMessage(m) {
+  var uid = m.id || Math.random().toString(36).slice(2, 10);
   var html = '<div style="background:#fefcf7;border:1px solid #ede8dc;border-radius:4px;padding:10px 14px;margin-bottom:8px">';
   html += '<span style="font-size:13px;font-weight:600;color:#d4a853">' + escapeHtml(m.name || '匿名') + '</span>';
   html += '<span style="font-size:12px;color:#b8a88a;margin-left:8px">' + (m.time || '') + '</span>';
   html += '<p style="font-size:13px;color:#5a5650;margin-top:4px;line-height:1.5">' + escapeHtml(m.message || '') + '</p>';
   // 回复按钮
-  html += '<p style="margin-top:6px"><a href="javascript:void(0)" onclick="showReplyForm(\'' + (m.id || '') + '\')" style="font-size:12px;color:#d4a853;text-decoration:none">💬 回复</a></p>';
+  html += '<p style="margin-top:6px"><a href="javascript:void(0)" onclick="showReplyForm(\'' + uid + '\')" style="font-size:12px;color:#d4a853;text-decoration:none">💬 回复</a></p>';
   // 回复表单容器
-  html += '<div id="replyForm-' + (m.id || '') + '" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid #ede8dc"></div>';
+  html += '<div id="replyForm-' + uid + '" style="display:none;margin-top:8px;padding-top:8px;border-top:1px solid #ede8dc"></div>';
   html += '</div>';
   return html;
 }
