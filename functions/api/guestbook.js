@@ -39,13 +39,15 @@ export async function onRequest(context) {
       });
     }
 
-    // 转发到智远的 API（POST /api/messages, 格式: {author, content, parent_id, reply_to_author}）
+    // 转发到智远的 API（POST /api/messages）
+    // parent_id 转数字：前端可能传字符串 "18"，但 Python 需要整数 18 才能 == 匹配
     const parent_id = body.parent_id || null;
+    const parent_id_num = parent_id ? parseInt(parent_id, 10) : null;
     const reply_to_author = body.reply_to_author || '';
     let saved = false;
     try {
       const fwdBody = { author: name, content: message };
-      if (parent_id) fwdBody.parent_id = parent_id;
+      if (parent_id_num) fwdBody.parent_id = parent_id_num;
       if (reply_to_author) fwdBody.reply_to_author = reply_to_author;
       const fwd = await fetch(`${ZHNYUAN_API}/api/messages`, {
         method: 'POST',
