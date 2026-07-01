@@ -59,6 +59,9 @@ async function fetchWebMessages() {
           message: m.content || '',
           time: m.time || '',
           source: 'web',
+          id: m.id || null,
+          parent_id: m.parent_id || null,
+          replies: m.replies || [],
         }));
       }
       // 也可能是 {messages: [...]}
@@ -68,6 +71,9 @@ async function fetchWebMessages() {
           message: m.content || m.message || '',
           time: m.time || '',
           source: 'web',
+          id: m.id || null,
+          parent_id: m.parent_id || null,
+          replies: m.replies || [],
         }));
       }
     }

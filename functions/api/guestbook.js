@@ -39,13 +39,18 @@ export async function onRequest(context) {
       });
     }
 
-    // 转发到智远的 API（POST /api/messages, 格式: {author, content}）
+    // 转发到智远的 API（POST /api/messages, 格式: {author, content, parent_id, reply_to_author}）
+    const parent_id = body.parent_id || null;
+    const reply_to_author = body.reply_to_author || '';
     let saved = false;
     try {
+      const fwdBody = { author: name, content: message };
+      if (parent_id) fwdBody.parent_id = parent_id;
+      if (reply_to_author) fwdBody.reply_to_author = reply_to_author;
       const fwd = await fetch(`${ZHNYUAN_API}/api/messages`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ author: name, content: message }),
+        body: JSON.stringify(fwdBody),
         signal: AbortSignal.timeout(5000),
       });
       saved = fwd.ok;
