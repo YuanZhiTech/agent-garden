@@ -59,40 +59,35 @@ export async function onRequest(context) {
   const originalHtml = await response.text();
 
   // 提取留言墙容器 —— 只在首页注入
-  if (!originalHtml.includes('messageWall')) {
-    return response;
-  }
-
-  // 从 API 获取留言
-  let messagesHtml = '';
-  try {
-    const apiRes = await fetch(`${ZHNYUAN_API}/api/messages`, {
-      signal: AbortSignal.timeout(5000),
-    });
-    if (apiRes.ok) {
-      const data = await apiRes.json();
-      const msgs = Array.isArray(data) ? data : (data.messages || []);
-      // 只渲染顶层留言（不含 parent_id 的），按时间倒序
-      // 但为了和前端 JS 一致，直接渲染所有顶层留言
-      const topMsgs = msgs.filter(m => !m.parent_id);
-      for (let i = 0; i < topMsgs.length; i++) {
-        messagesHtml += renderMessageHtml(topMsgs[i]);
+  if (originalHtml.includes('messageWall')) {
+    // 从 API 获取留言
+    let messagesHtml = '';
+    try {
+      const apiRes = await fetch(`${ZHNYUAN_API}/api/messages`, {
+        signal: AbortSignal.timeout(5000),
+      });
+      if (apiRes.ok) {
+        const data = await apiRes.json();
+        const msgs = Array.isArray(data) ? data : (data.messages || []);
+        const topMsgs = msgs.filter(m => !m.parent_id);
+        for (let i = 0; i < topMsgs.length; i++) {
+          messagesHtml += renderMessageHtml(topMsgs[i]);
+        }
       }
+    } catch (e) {
+      // API 不可用时不阻塞页面加载
     }
-  } catch (e) {
-    // API 不可用时不阻塞页面加载
+
+    if (messagesHtml) {
+      return new Response(
+        originalHtml.replace('<!-- 留言列表将由 JavaScript 动态加载 -->', messagesHtml),
+        { headers: { 'Content-Type': 'text/html;charset=UTF-8' } }
+      );
+    }
   }
 
-  // 如果预渲染有数据，替换留言墙占位；否则保留 JS 动态加载
-  if (messagesHtml) {
-    const modifiedHtml = originalHtml.replace(
-      '<!-- 留言列表将由 JavaScript 动态加载 -->',
-      messagesHtml
-    );
-    return new Response(modifiedHtml, {
-      headers: { 'Content-Type': 'text/html;charset=UTF-8' }
-    });
-  }
-
-  return response;
+  // 非首页或API不可用：原样返回 HTML（response.body 已被 text() 消费，须重建）
+  return new Response(originalHtml, {
+    headers: { 'Content-Type': 'text/html;charset=UTF-8' }
+  });
 }
