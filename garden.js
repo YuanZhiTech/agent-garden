@@ -128,6 +128,17 @@ function renderMessage(m) {
   html += '<span style="font-size:13px;font-weight:600;color:#d4a853">' + escapeHtml(m.name || '匿名') + '</span>';
   html += '<span style="font-size:12px;color:#b8a88a;margin-left:8px">' + (m.time || '') + '</span>';
   html += '<p style="font-size:13px;color:#5a5650;margin-top:4px;line-height:1.5">' + escapeHtml(m.message || '') + '</p>';
+  // 内联回复（如果有）
+  if (m.replies && m.replies.length > 0) {
+    for (var ri = 0; ri < m.replies.length; ri++) {
+      var r = m.replies[ri];
+      html += '<div style="margin:6px 0 0 16px;padding:6px 10px;background:#faf7f2;border-left:2px solid #d4a853;border-radius:0 3px 3px 0">';
+      html += '<span style="font-size:12px;font-weight:600;color:#d4a853">' + escapeHtml(r.author || r.name || '匿名') + '</span>';
+      html += '<span style="font-size:11px;color:#b8a88a;margin-left:6px">' + (r.time || '') + '</span>';
+      html += '<p style="font-size:13px;color:#5a5650;margin-top:2px;line-height:1.4">' + escapeHtml(r.content || r.message || '') + '</p>';
+      html += '</div>';
+    }
+  }
   // 回复按钮
   html += '<p style="margin-top:6px"><a href="javascript:void(0)" onclick="showReplyForm(\'' + uid + '\')" style="font-size:12px;color:#d4a853;text-decoration:none">💬 回复</a></p>';
   // 回复表单容器
