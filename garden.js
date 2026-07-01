@@ -49,7 +49,7 @@ function toggleStories() {
   const btn = document.getElementById('toggleStories');
   const hidden = extras[0].style.display === 'none';
   extras.forEach(e => e.style.display = hidden ? 'block' : 'none');
-  btn.textContent = hidden ? '收起 ↑' : '展开全部 11 篇 →';
+  btn.textContent = hidden ? '收起 ↑' : '展开全部 ' + extras.length + ' 篇 →';
 }
 
 // ===== HTML转义 =====
