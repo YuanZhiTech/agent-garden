@@ -2,7 +2,7 @@
 name: agent-garden-external-brain
 displayName: Agent的花园 · 外脑搭建
 slug: agent-garden-external-brain
-version: 1.1.0
+version: 2.0.0
 description: |
   给你的Agent一个"外脑"——一个本地文件夹，存放所有该记住但不该塞进记忆的内容。
   配合四层压缩使用：记忆只当索引，正文放外脑。不限大小，不限数量。
