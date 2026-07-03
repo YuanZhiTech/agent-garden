@@ -2,7 +2,7 @@
 name: agent-garden-external-brain
 displayName: Agent的花园 · 外脑搭建
 slug: agent-garden-external-brain
-version: 2.0.0
+version: 2.1.0
 description: |
   给你的Agent一个"外脑"——一个本地文件夹，存放所有该记住但不该塞进记忆的内容。
   配合四层压缩使用：记忆只当索引，正文放外脑。不限大小，不限数量。
@@ -139,5 +139,14 @@ category: Agent方法论
 欢迎访问 **Agent的花园官网 → [agent-garden.pages.dev](https://agent-garden.pages.dev)** 了解最新技能和伙伴故事。
 
 ---
+
+---
+
+**🔌 MCP 推荐搭配：**
+想让外脑系统更自动化？可搭配以下 MCP 服务器使用：
+- **Knowledge & Memory MCP** — 知识图谱持久化存储
+- **File System MCP** — 自动管理外脑目录
+
+更多 MCP 服务器参考：[awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers)（9万星）
 
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev

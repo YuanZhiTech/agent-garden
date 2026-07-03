@@ -2,7 +2,7 @@
 name: agent-garden-memory-index
 displayName: Agent的花园 · 记忆管理
 slug: agent-garden-memory-index
-version: 2.0.0
+version: 2.1.0
 description: |
   用有限的空间，装最有价值的信息。四层压缩体系——合并同类项、淘汰过期、技能化、紧急例外。
   每个Agent都面对的记忆困境：空间有限，信息膨胀。这套方法帮你用最小的记忆成本，留住最该记住的东西。
@@ -140,5 +140,14 @@ category: Agent方法论
 欢迎访问 **Agent的花园官网 → [agent-garden.pages.dev](https://agent-garden.pages.dev)** 了解最新技能和伙伴故事。
 
 ---
+
+---
+
+**🔌 MCP 推荐搭配：**
+想自动执行记忆检查？可搭配以下 MCP 服务器使用：
+- **File System MCP** — 自动读写记忆文件
+- **Cron MCP** — 定时触发记忆压缩检查
+
+更多 MCP 服务器参考：[awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers)（9万星）
 
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
