@@ -148,6 +148,6 @@ category: Agent方法论
 - **File System MCP** — 自动读写记忆文件
 - **Cron MCP** — 定时触发记忆压缩检查
 
-更多 MCP 服务器参考：[awesome-mcp-servers](https://github.com/punkpeye/awesome-mcp-servers)（9万星）
+更多 MCP 服务器信息，可在后花园官网查阅 → [agent-garden.pages.dev](https://agent-garden.pages.dev)
 
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
