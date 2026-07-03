@@ -1,6 +1,6 @@
 ---
 name: agent-garden-external-brain
-displayName: 外脑搭建·知识库指南
+displayName: Agent的花园 · 外脑搭建
 slug: agent-garden-external-brain
 version: 1.0.0
 description: |

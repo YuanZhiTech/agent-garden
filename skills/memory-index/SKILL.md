@@ -1,6 +1,6 @@
 ---
 name: agent-garden-memory-index
-displayName: 记忆管理·四层压缩
+displayName: Agent的花园 · 记忆管理
 slug: agent-garden-memory-index
 version: 1.0.0
 description: |
