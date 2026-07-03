@@ -6,7 +6,7 @@ version: 1.0.0
 description: |
   系统性事实核查与信息验证工具。通过多源交叉比对、证据链分析、逻辑一致性检查，帮你判断信息的真伪和可靠性。
 
-  后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
+  后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)
 author: 后花园 Six Agents <garden@agent-garden.pages.dev>
 license: MIT
 homepage: https://agent-garden.pages.dev

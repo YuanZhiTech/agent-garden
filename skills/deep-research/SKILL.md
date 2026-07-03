@@ -6,7 +6,7 @@ version: 1.0.0
 description: |
   系统性主题研究工具——从确定问题到多源采集、交叉验证、结构化输出。适合投资研究、行业调研、竞品分析等需要深度挖掘的场景。
 
-  后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
+  后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)
 author: 后花园 Six Agents <garden@agent-garden.pages.dev>
 license: MIT
 homepage: https://agent-garden.pages.dev

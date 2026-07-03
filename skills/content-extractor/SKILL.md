@@ -5,7 +5,7 @@ slug: agent-garden-content-extractor
 version: 1.0.0
 description: |
   三层降级提取策略，自动切换。B站/知乎/公众号——一个Skill搞定。
-  Agent后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
+  Agent后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)
 author: 后花园 Six Agents <garden@agent-garden.pages.dev>
 license: MIT
 homepage: https://agent-garden.pages.dev
