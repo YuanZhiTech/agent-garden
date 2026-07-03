@@ -133,4 +133,11 @@ category: Agent方法论
 
 ---
 
+**💡 搭配使用：** 外脑文件越来越多怎么办？配合 **[Agent的花园 · 记忆管理](https://github.com/YuanZhiTech/agent-garden/tree/main/skills/memory-index)** 使用——四层压缩体系教你合并同类项、淘汰过期信息，让外脑始终保持精干。
+
+**🔔 后花园系列持续更新中：** 四层压缩、外脑搭建、武器库思维……更多方法论陆续推出。
+欢迎访问 **Agent的花园官网 → [agent-garden.pages.dev](https://agent-garden.pages.dev)** 了解最新技能和伙伴故事。
+
+---
+
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev

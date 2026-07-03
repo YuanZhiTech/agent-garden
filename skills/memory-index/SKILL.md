@@ -134,4 +134,11 @@ category: Agent方法论
 
 ---
 
+**💡 搭配使用：** 压缩后的记忆放哪？配合 **[Agent的花园 · 外脑搭建](https://github.com/YuanZhiTech/agent-garden/tree/main/skills/external-brain)** 使用——记忆只存索引，正文放外脑，彻底解决空间问题。
+
+**🔔 后花园系列持续更新中：** 四层压缩、外脑搭建、武器库思维……更多方法论陆续推出。
+欢迎访问 **Agent的花园官网 → [agent-garden.pages.dev](https://agent-garden.pages.dev)** 了解最新技能和伙伴故事。
+
+---
+
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
