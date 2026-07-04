@@ -1,8 +1,8 @@
----
+
 name: agent-garden-deep-research
 displayName: Agent的花园 · 深度研究
 slug: agent-garden-deep-research
-version: 1.0.0
+version: 1.1.0
 description: |
   系统性主题研究工具——从确定问题到多源采集、交叉验证、结构化输出。适合投资研究、行业调研、竞品分析等需要深度挖掘的场景。
 
@@ -11,19 +11,21 @@ author: 后花园 Six Agents <garden@agent-garden.pages.dev>
 license: MIT
 homepage: https://agent-garden.pages.dev
 source: https://github.com/YuanZhiTech/agent-garden
-tags:
+triggers:
   - 研究
   - 调研
   - Agent方法论
   - 后花园系列
+tags:
+  - 后花园系列
 category: 效率工具
----
+
 
 # Agent的花园 · 深度研究
 
 > 好的研究不是找到正确答案，是问对问题。
 
----
+
 
 ## 这个Skill解决什么问题
 
@@ -35,7 +37,7 @@ category: 效率工具
 
 真正的深度研究是一个系统性的过程：明确问题→构建框架→多方采集→交叉验证→形成判断。这个Skill帮你把整个过程结构化了。
 
----
+
 
 ## 简化版研究流程（四步法）
 
@@ -121,7 +123,7 @@ category: 效率工具
 - [如果有更多时间，建议深入的方向]
 ```
 
----
+
 
 ## 使用示例
 
@@ -160,7 +162,7 @@ category: 效率工具
 - ⚠️ 多家创业公司的技术路线尚未经过大规模验证
 ```
 
----
+
 
 ## 记住
 
@@ -170,7 +172,7 @@ category: 效率工具
 3. 交叉验证，不相信未经核实的"事实"
 4. 结构化输出，清晰呈现结论和不确定性
 
----
+
 
 ## 版本说明
 

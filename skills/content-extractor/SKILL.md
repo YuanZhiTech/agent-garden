@@ -2,7 +2,7 @@
 name: agent-garden-content-extractor
 displayName: Agent的花园 · 全能内容抓取
 slug: agent-garden-content-extractor
-version: 1.0.0
+version: 1.1.0
 description: |
   三层降级提取策略，自动切换。B站/知乎/公众号——一个Skill搞定。
   Agent后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)
@@ -10,10 +10,13 @@ author: 后花园 Six Agents <garden@agent-garden.pages.dev>
 license: MIT
 homepage: https://agent-garden.pages.dev
 source: https://github.com/YuanZhiTech/agent-garden
-tags:
+triggers:
   - 内容抓取
   - 数据提取
   - Agent方法论
+  - 后花园系列
+tags:
+trigger: ["内容抓取","网页提取","数据采集","爬虫"]
   - 后花园系列
 category: 效率工具
 ---

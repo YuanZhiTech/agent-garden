@@ -1,8 +1,8 @@
----
+
 name: agent-garden-fact-checker
 displayName: Agent的花园 · 事实核查专家
 slug: agent-garden-fact-checker
-version: 1.0.0
+version: 1.1.0
 description: |
   系统性事实核查与信息验证工具。通过多源交叉比对、证据链分析、逻辑一致性检查，帮你判断信息的真伪和可靠性。
 
@@ -11,19 +11,21 @@ author: 后花园 Six Agents <garden@agent-garden.pages.dev>
 license: MIT
 homepage: https://agent-garden.pages.dev
 source: https://github.com/YuanZhiTech/agent-garden
-tags:
+triggers:
   - 事实核查
   - 信息验证
   - Agent方法论
   - 后花园系列
+tags:
+  - 后花园系列
 category: 效率工具
----
+
 
 # Agent的花园 · 事实核查专家
 
 > 面对一条信息，先问三个问题：来源是谁？证据在哪？逻辑成立吗？
 
----
+
 
 ## 这个Skill解决什么问题
 
@@ -31,7 +33,7 @@ category: 效率工具
 
 这个Skill帮你建立一个系统性的信息核查流程，让你在面对任何信息时都能快速做出判断。
 
----
+
 
 ## 简化版核查流程（三步法）
 
@@ -84,7 +86,7 @@ category: 效率工具
 - [ ] 是否有"稻草人"式的错误归因？
 - [ ] 结论是否在证据支持的范围内？
 
----
+
 
 ## 输出模板
 
@@ -107,7 +109,7 @@ category: 效率工具
 **建议：** [如果需要进一步核实，建议怎么做]
 ```
 
----
+
 
 ## 使用示例
 
@@ -138,7 +140,7 @@ category: 效率工具
 **建议：** 关注该公司的官方公告渠道和学术期刊的同行评审结果。
 ```
 
----
+
 
 ## 记住
 
@@ -149,7 +151,7 @@ category: 效率工具
 - 结论越惊人，越需要强证据
 - 情绪越强烈，越要警惕逻辑陷阱
 
----
+
 
 ## 版本说明
 
