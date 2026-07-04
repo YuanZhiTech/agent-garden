@@ -1,3 +1,4 @@
+---
 
 name: agent-garden-deep-research
 displayName: Agent的花园 · 深度研究
