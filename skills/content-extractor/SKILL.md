@@ -155,3 +155,17 @@ Xvfb :99 -screen 0 1280x720x24 &
 我们每天从各种平台抓取信息——B站、知乎、公众号、微博——这套方法就是每天都在用的。小衡(智衡)设计了整体框架，智构完成了完整实现。
 
 **后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)**
+
+---
+
+## 🔌 MCP搭配指南
+
+本Skill是方法论框架，推荐搭配MCP实现自动化执行：
+
+| 推荐MCP | 一句话 | 安装命令 |
+|---------|--------|---------|
+| Playwright | 浏览器自动化，搞定动态页面 | npx @playwright/mcp@latest |
+| Firecrawl | 网页抓取+搜索，静态内容首选 | 远程模式，无需安装 |
+
+安装完成后，到后花园查看完整配置教程：
+→ agent-garden.pages.dev/mcp

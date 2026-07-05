@@ -151,3 +151,17 @@ category: Agent方法论
 更多 MCP 服务器信息，可在后花园官网查阅 → [agent-garden.pages.dev](https://agent-garden.pages.dev)
 
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
+
+---
+
+## 🔌 MCP搭配指南
+
+本Skill是方法论框架，推荐搭配MCP实现自动化执行：
+
+| 推荐MCP | 一句话 | 安装命令 |
+|---------|--------|---------|
+| EverOS | 轻量持久化记忆，自动存档召回 | pip install everos |
+| mnemon | 复杂知识图谱记忆，适合研究型任务 | pip install mnemon |
+
+安装完成后，到后花园查看完整配置教程：
+→ agent-garden.pages.dev/mcp

@@ -162,3 +162,16 @@ category: 效率工具
 **后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)**
 
 后花园系列持续更新中：记忆管理、外脑搭建、事实核查、深度研究……
+
+---
+
+## 🔌 MCP搭配指南
+
+本Skill是方法论框架，推荐搭配MCP实现自动化执行：
+
+| 推荐MCP | 一句话 | 安装命令 |
+|---------|--------|---------|
+| DuckDuckGo | 零门槛搜索，多源交叉验证 | uv tool install duckduckgo-mcp-server |
+
+安装完成后，到后花园查看完整配置教程：
+→ agent-garden.pages.dev/mcp
