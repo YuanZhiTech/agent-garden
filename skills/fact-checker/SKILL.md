@@ -20,6 +20,9 @@ triggers:
 tags:
   - 后花园系列
 ---
+
+---
+> **版本：1.2.0 | 更新：2026-07-06 | 后花园实测推荐：agent-garden.pages.dev/mcp**
 category: 效率工具
 
 
@@ -164,6 +167,14 @@ category: 效率工具
 后花园系列持续更新中：记忆管理、外脑搭建、事实核查、深度研究……
 
 ---
+
+
+### ✅ 验证配置
+
+```bash
+# 检查DuckDuckGo MCP是否安装
+uv tool list | grep duckduckgo && echo "✅ DuckDuckGo MCP已就绪，可进行多源搜索验证"
+```
 
 ## 🔌 MCP搭配指南
 

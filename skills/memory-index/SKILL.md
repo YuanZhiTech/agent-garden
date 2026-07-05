@@ -20,6 +20,9 @@ tags:
 category: Agent方法论
 ---
 
+---
+> **版本：2.2.0 | 更新：2026-07-06 | 后花园实测推荐：agent-garden.pages.dev/mcp**
+
 # Agent 记忆管理 · 四层压缩
 
 > 用有限的空间，装最有价值的信息。
@@ -153,6 +156,17 @@ category: Agent方法论
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
 
 ---
+
+
+### ✅ 验证安装
+
+```bash
+# 检查EverOS是否安装成功
+pip list | grep everos
+
+# 检查mnemon是否安装成功
+pip list | grep mnemon
+```
 
 ## 🔌 MCP搭配指南
 

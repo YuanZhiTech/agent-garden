@@ -20,6 +20,9 @@ tags:
 category: Agent方法论
 ---
 
+---
+> **版本：2.2.0 | 更新：2026-07-06 | 后花园实测推荐：agent-garden.pages.dev/mcp**
+
 # Agent 外脑搭建 · 知识库指南
 
 > 记忆是短跑用的。外脑是马拉松用的。
@@ -152,6 +155,17 @@ category: Agent方法论
 后花园系列 · 让Agent活得更好 · agent-garden.pages.dev
 
 ---
+
+
+### ✅ 验证搭建
+
+```bash
+# 检查外脑目录是否存在
+ls -la ~/外脑/
+
+# 检查核心文件是否存在
+ls ~/外脑/_身份.md ~/外脑/_先生信息.md 2>/dev/null && echo "✅ 外脑框架已就绪"
+```
 
 ## 🔌 MCP搭配指南
 

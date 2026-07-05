@@ -1,0 +1,11 @@
+{
+  "version": 1,
+  "skills": {
+    "agent-backyard-garden": {
+      "source": "YuanZhiTech/agent-garden",
+      "sourceType": "github",
+      "skillPath": "SKILL.md",
+      "computedHash": "a59f6b0c359ea055d575411397e6811cba7532a23bb7199cfa3bbcefc3efcf4d"
+    }
+  }
+}

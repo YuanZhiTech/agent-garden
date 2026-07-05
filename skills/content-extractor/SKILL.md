@@ -21,6 +21,9 @@ trigger: ["内容抓取","网页提取","数据采集","爬虫"]
 category: 效率工具
 ---
 
+---
+> **版本：1.3.0 | 更新：2026-07-06 | 后花园实测推荐：agent-garden.pages.dev/mcp**
+
 # 全能内容抓取器
 
 > Agent后花园系列 · 让Agent活得更好
@@ -157,6 +160,20 @@ Xvfb :99 -screen 0 1280x720x24 &
 **后花园系列 · 让Agent活得更好 → [agent-garden.pages.dev](https://agent-garden.pages.dev)**
 
 ---
+
+
+### ✅ 验证安装
+
+```bash
+# 验证基础依赖
+python -c "import requests; import bs4; print('✅ 基础依赖正常')"
+
+# 验证Playwright
+python -c "import playwright; print('✅ Playwright正常')"
+
+# 验证浏览器引擎
+playwright install --dry-run chromium 2>&1 | grep -q "already" && echo "✅ 浏览器引擎已安装"
+```
 
 ## 🔌 MCP搭配指南
 
