@@ -1,8 +1,8 @@
 ---
 name: agent-garden-file-organizer
 slug: agent-garden-file-organizer
-version: 1.0.0
-displayName: 文件整理助手 · 后花园版
+version: 1.1.0
+displayName: Agent的花园 · 文件整理助手
 description: 智能整理电脑文件——自动分类、去重、优化结构、清理垃圾。让你的数字工作空间保持整洁。
 tags: [后花园, 效率, 文件管理, 整理]
 category: Productivity

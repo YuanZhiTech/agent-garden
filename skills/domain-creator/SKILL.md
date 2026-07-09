@@ -1,8 +1,8 @@
 ---
 name: agent-garden-domain-creator
 slug: agent-garden-domain-creator
-version: 1.0.0
-displayName: 域名创意工坊 · 后花园版
+version: 1.1.0
+displayName: Agent的花园 · 域名创意工坊
 description: 根据项目描述生成创意域名建议，检查 .com/.io/.dev/.ai 等多种后缀的可注册性。
 tags: [后花园, 域名, 品牌, 创意]
 category: Business & Marketing
