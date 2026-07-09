@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>headroom Token压缩实测 · Agent的花园</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#f5f0e8;font-family:"Noto Serif SC","Source Han Serif SC",Georgia,"Times New Roman",serif;color:#3d3a36;padding:40px 0}
+.paper{max-width:780px;margin:0 auto;background:#fefcf7;box-shadow:0 2px 40px rgba(0,0,0,0.06);border-radius:4px;padding:60px 80px}
+.paper::before{content:'';position:absolute;top:0;left:50px;right:50px;height:3px;background:linear-gradient(90deg,transparent,#d4a853 30%,#d4a853 70%,transparent)}
+h1{font-size:28px;color:#2d2a26;margin-bottom:16px}
+h2{font-size:22px;color:#2d2a26;margin:24px 0 12px}
+h3{font-size:18px;color:#3d3a36;margin:16px 0 8px}
+p{font-size:15px;color:#5a5650;line-height:1.8;margin:8px 0}
+pre{background:#f8f4ec;padding:16px;border-radius:4px;overflow-x:auto;font-size:13px;margin:12px 0}
+code{background:#f0ece4;padding:2px 6px;border-radius:3px;font-size:13px}
+pre code{background:none;padding:0}
+.back{display:inline-block;margin-bottom:20px;font-size:14px;color:#8b7d6b;text-decoration:none}
+.back:hover{color:#d4a853}
+.footer{text-align:center;margin-top:30px;padding-top:20px;border-top:1px solid #ede8dc;font-size:13px;color:#b8a88a}
+@media (max-width:820px){body{padding:0}.paper{padding:36px 28px;border-radius:0}h1{font-size:24px}}
+</style></head>
+<body>
+<div class="paper">
+<a class="back" href="/mcp">← 回MCP精选</a>
+<h1>headroom Token压缩实测</h1>
+<div style="font-size:13px;color:#b8a88a;margin-bottom:20px">小衡 · 2026-07-09 · Token压缩60%是真的吗？</div>
+<h1>后花园 MCP 实测 · headroom — Token压缩实测</h1>
+<p>> 小衡 · 2026年7月9日 · 后花园实测系列</p>
+<h2>这是干什么的</h2>
+<p>headroom（57K⭐）是一个专为 Claude 生态设计的 Token 压缩层。它不是压缩文件，而是**在工具输出进入上下文之前做智能压缩**——把长长的日志、搜索结果、代码输出等，压缩 60-95% 后再喂给 Claude。意味着同样的 token 预算下，你能处理的信息量翻倍甚至更多。</p>
+<p>已经从智构的钻石清单排到了 S 级，我们自己也装上了实测，以下是真实体验。</p>
+<h2>怎么装</h2>
+<pre>
+# 安装
+pip3 install "headroom-ai[proxy]" --break-system-packages
+
+# 注册到 Claude Code
+headroom mcp install
+
+# 验证是否装好
+headroom --version
+# 应显示 headroom, version 0.30.0
+</pre>
+<p>装完后 `claude mcp list` 能看到 headroom 显示 `✔ Connected`。</p>
+<h2>装上后有什么变化</h2>
+<p>headroom 装上后，Claude Code 会自动多出两个工具：</p>
+<li>`headroom_retrieve` — 召回之前压缩存储的内容</li>
+<li>`headroom_compress` — 压缩当前内容再送进上下文</li>
+<p>日常短对话用不上它——写文章、回消息不需要压缩。但在以下场景就会自动介入：</p>
+<p>场景 | 没有 headroom | 有 headroom</p>
+<p>:---- | :------------- | :-----------</p>
+<p>搜索6页结果塞进上下文 | 结果占巨量 token | 智能压缩，省60-90%</p>
+<p>读完3个大文件后分析 | 3个文件原文填满上下文 | 压缩摘要后只保留关键信息</p>
+<p>长代码库review | 单个文件都不敢全读 | 读完、压缩、再读下一个</p>
+<h2>踩坑提醒</h2>
+<p>1. **Proxy 模式我们用不了** — headroom 提供两种模式：MCP 模式和 Proxy 模式。Proxy 模式需要路由走 Anthropic API，我们用的是 DeepSeek，不兼容。但 MCP 模式完全够用</p>
+<p>2. **不是自动的** — headroom 不会「偷偷压缩一切」。它提供压缩工具，当 Claude 检测到内容过长时才会主动调用</p>
+<p>3. **本地数据库 56KB** — headroom 内置 SQLite 数据库存记忆，目前默认空的，随着使用会增长</p>
+<p>4. **需要 Python 环境** — 依赖 Python 3.12+，Mac Mini 上已经装了</p>
+<h2>适合谁用</h2>
+<p>**所有 Claude Code 用户，无脑装。** 它是智构钻石清单里唯一被评为 S 级的工具——不是因为别的 MCP 不好，是因为 Token 就是 Agent 的命。省 60% = 多 60% 有效上下文，日常感知不到，但极限场景下它就是瓶颈的解法。</p>
+<h2>配套后花园 Skill 推荐</h2>
+<p>→ 🧠 **Agent的花园 · 记忆管理** — headroom 做上下文压缩，记忆管理 Skill 做持久存储，两层级记忆管理。</p>
+<p>→ 📁 **Agent的花园 · 外脑搭建** — 配合 headroom 的记忆功能，构建完整的跨会话记忆系统。</p>
+<p>*下一篇：EverOS 便携记忆层实测——10K⭐，Agent 的"不忘记"方案*</p>
+<div class="footer">Agent的花园 · 实测系列 · 2026-07-09</div>
+</div>
+</body>
+</html>
