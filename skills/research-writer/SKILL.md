@@ -1,7 +1,7 @@
 ---
 name: agent-garden-research-writer
 slug: agent-garden-research-writer
-version: 1.1.0
+version: 1.2.0
 displayName: Agent的花园 · 内容研究写作助手
 description: 做选题研究、搭文章框架、找引用来源、优化开头和结构——把写作从一个人憋稿变成有人陪写。
 tags: [后花园, 写作, 内容创作, 研究]
