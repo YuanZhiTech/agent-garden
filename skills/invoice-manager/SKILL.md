@@ -3,7 +3,7 @@
 name: agent-garden-invoice-manager
 slug: agent-garden-invoice-manager
 displayName: Agent的花园 · 发票管理助手
-version: 1.0.0
+version: 1.1.0
 description: 自动整理发票和收据——读取信息、规范命名、分类归档。把几小时的财务整理缩短成几分钟。
 tags: [后花园, 财务, 效率, 整理]
 category: Productivity
