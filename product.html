@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agent花园 Code · 产品介绍</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: #f5f0e8;
+    font-family: "PingFang SC", "Noto Sans SC", system-ui, sans-serif;
+    color: #2d2a26;
+  }
+
+  .container { max-width: 960px; margin: 0 auto; padding: 40px 20px; }
+  .gold { color: #d4a853; }
+
+  /* ─── 导航 ─── */
+  .nav { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .nav a { color: #8b7d6b; text-decoration: none; font-size: 14px; }
+  .nav a:hover { color: #d4a853; }
+
+  /* ─── Hero ─── */
+  .hero { text-align: center; margin-bottom: 60px; }
+  .hero h1 { font-size: 40px; font-weight: 700; margin-bottom: 12px; }
+  .hero .subtitle { font-size: 18px; color: #8b7d6b; margin-bottom: 8px; }
+  .hero .badge { display: inline-block; background: #d4a853; color: #fff; font-size: 12px; letter-spacing: 2px; padding: 5px 18px; border-radius: 20px; margin-bottom: 20px; }
+  .hero p { font-size: 15px; color: #5a5650; line-height: 1.7; max-width: 600px; margin: 0 auto 24px; }
+
+  .hero-buttons { display: flex; gap: 16px; justify-content: center; flex-wrap: wrap; }
+  .btn-primary {
+    display: inline-block;
+    background: linear-gradient(135deg, #d4a853, #c49a40);
+    color: #fff; font-size: 16px; font-weight: 600;
+    padding: 14px 40px; border-radius: 30px;
+    text-decoration: none; letter-spacing: 1px;
+    box-shadow: 0 4px 16px rgba(212,168,83,0.3);
+    transition: all 0.2s;
+  }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 24px rgba(212,168,83,0.4); }
+  .btn-secondary {
+    display: inline-block;
+    background: #fff;
+    color: #d4a853; font-size: 16px; font-weight: 600;
+    padding: 14px 40px; border-radius: 30px;
+    text-decoration: none; letter-spacing: 1px;
+    border: 2px solid rgba(212,168,83,0.3);
+    transition: all 0.2s;
+  }
+  .btn-secondary:hover { border-color: #d4a853; }
+
+  .btn-small {
+    font-size: 14px;
+    padding: 10px 28px;
+  }
+
+  /* ─── 金边分割 ─── */
+  .gold-line { width: 60px; height: 2.5px; background: linear-gradient(90deg,#d4a853,#e8c875,#d4a853); border-radius: 2px; margin: 0 auto 30px; }
+
+  /* ─── 视频区 ─── */
+  .video-section { text-align: center; margin-bottom: 60px; }
+  .video-section h2 { font-size: 24px; margin-bottom: 20px; }
+  .video-placeholder {
+    width: 100%; max-width: 720px; height: 405px;
+    background: #e8dfd0; border-radius: 16px;
+    display: flex; align-items: center; justify-content: center;
+    margin: 0 auto;
+    font-size: 15px; color: #8b7d6b;
+    border: 2px dashed rgba(212,168,83,0.2);
+  }
+
+  /* ─── 能干吗 ─── */
+  .features { margin-bottom: 60px; }
+  .features h2 { text-align: center; font-size: 24px; margin-bottom: 24px; }
+  .feature-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+  @media (max-width: 600px) { .feature-grid { grid-template-columns: 1fr; } }
+  .feature-card {
+    background: #fff; border-radius: 14px; padding: 20px;
+    border: 1px solid rgba(212,168,83,0.1);
+    box-shadow: 0 2px 8px rgba(0,0,0,0.02);
+  }
+  .feature-card h3 { font-size: 15px; margin-bottom: 6px; }
+  .feature-card p { font-size: 13px; color: #8b7d6b; line-height: 1.6; }
+
+  /* ─── 对比表 ─── */
+  .comparison { margin-bottom: 60px; }
+  .comparison h2 { text-align: center; font-size: 24px; margin-bottom: 24px; }
+  .comp-table { width: 100%; border-collapse: collapse; font-size: 14px; background: #fff; border-radius: 14px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,0.03); }
+  .comp-table th, .comp-table td { padding: 14px 16px; text-align: center; border-bottom: 1px solid #f0ebe0; }
+  .comp-table th { background: #f8f4ec; font-weight: 600; font-size: 13px; color: #5a5650; }
+  .comp-table tr:last-child td { border-bottom: none; }
+  .comp-table .highlight { background: rgba(212,168,83,0.08); }
+  .comp-table .check { color: #4caf50; }
+  .comp-table .cross { color: #e0d5c5; }
+
+  /* ─── 价格 ─── */
+  .pricing { margin-bottom: 60px; }
+  .pricing h2 { text-align: center; font-size: 24px; margin-bottom: 24px; }
+  .pricing-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+  @media (max-width: 700px) { .pricing-grid { grid-template-columns: 1fr; } }
+  .price-card {
+    background: #fff; border-radius: 16px; padding: 28px 20px;
+    border: 1px solid rgba(212,168,83,0.1);
+    text-align: center;
+    position: relative;
+  }
+  .price-card.featured {
+    border: 2px solid #d4a853;
+    box-shadow: 0 4px 20px rgba(212,168,83,0.15);
+  }
+  .price-card .pop {
+    position: absolute; top: -12px; left: 50%; transform: translateX(-50%);
+    background: #d4a853; color: #fff; font-size: 11px; letter-spacing: 1px;
+    padding: 3px 16px; border-radius: 20px;
+  }
+  .price-card h3 { font-size: 18px; margin-bottom: 4px; }
+  .price-card .desc { font-size: 13px; color: #8b7d6b; margin-bottom: 16px; }
+  .price-card .price { font-size: 32px; font-weight: 700; color: #d4a853; }
+  .price-card .unit { font-size: 13px; color: #8b7d6b; }
+  .price-card ul { list-style: none; margin: 16px 0; text-align: left; }
+  .price-card li { font-size: 13px; color: #5a5650; padding: 5px 0; }
+  .price-card li::before { content: "✅ "; }
+
+  /* ─── CTA ─── */
+  .cta-section { text-align: center; margin-bottom: 40px; padding: 40px; background: #fff; border-radius: 20px; border: 1px solid rgba(212,168,83,0.15); }
+  .cta-section h2 { font-size: 24px; margin-bottom: 12px; }
+  .cta-section p { font-size: 14px; color: #8b7d6b; margin-bottom: 20px; }
+
+  /* ─── FAQ ─── */
+  .faq { margin-bottom: 40px; }
+  .faq h2 { text-align: center; font-size: 24px; margin-bottom: 20px; }
+  .faq-item { margin-bottom: 12px; }
+  .faq-q { font-weight: 600; font-size: 14px; margin-bottom: 4px; cursor: pointer; }
+  .faq-a { font-size: 13px; color: #8b7d6b; line-height: 1.6; }
+
+  .footer { text-align: center; font-size: 13px; color: #b8a88a; padding: 30px 0; border-top: 1px solid #ede8dc; }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+  <!-- 导航 -->
+  <div class="nav">
+    <a href="/">← 回到花园</a>
+    <a href="https://t.zsxq.com/CbmwO">知识星球</a>
+  </div>
+
+  <!-- ═══ Hero ═══ -->
+  <div class="hero">
+    <div class="badge">🇨🇳 全中文 · 国内网络 · 到手即用</div>
+    <h1>Agent 花园 Code</h1>
+    <p class="subtitle">让 Claude Code 用上 DeepSeek · 浏览器里点鼠标就能用</p>
+    <div class="gold-line"></div>
+    <p>
+      不是更强的编程工具——是更低门槛的编程入口。<br>
+      非程序员也能用，月花费不到 ¥50。<br>
+      安装？我们远程帮你装好。
+    </p>
+    <div class="hero-buttons">
+      <a href="#download" class="btn-primary">免费试用 7 天</a>
+      <a href="https://t.zsxq.com/CbmwO" class="btn-secondary">加入星球 ¥365/年</a>
+    </div>
+  </div>
+
+  <!-- ═══ 视频 ═══ -->
+  <div class="video-section">
+    <h2>🎬 30 秒，看懂 Agent 花园 Code</h2>
+    <div class="video-placeholder">
+      ▶️ 视频加载中……<br>
+      <span style="font-size:12px">（小助理正在剪裁，完成后替换此区域）</span>
+    </div>
+  </div>
+
+  <!-- ═══ 能干什么 ═══ -->
+  <div class="features">
+    <h2>🛠️ 能干什么</h2>
+    <div class="feature-grid">
+      <div class="feature-card">
+        <h3>🖥️ 写代码</h3>
+        <p>跟它说"帮我写个批量改名工具"，它直接写好运行</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔧 改代码</h3>
+        <p>"把这个表格的排序逻辑改一下"——几秒改好</p>
+      </div>
+      <div class="feature-card">
+        <h3>📊 处理数据</h3>
+        <p>丢给它一个 Excel，"帮我整理成报表"</p>
+      </div>
+      <div class="feature-card">
+        <h3>🤖 自动化</h3>
+        <p>"每天自动备份这个文件夹到移动硬盘"</p>
+      </div>
+      <div class="feature-card">
+        <h3>📝 写文档</h3>
+        <p>"帮我写一份产品说明"——不用自己动笔</p>
+      </div>
+      <div class="feature-card">
+        <h3>🔍 分析问题</h3>
+        <p>"帮我看看这个错误日志是什么原因"</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 对比 ═══ -->
+  <div class="comparison">
+    <h2>💰 省多少钱</h2>
+    <table class="comp-table">
+      <tr>
+        <th style="text-align:left"></th>
+        <th>Claude Pro</th>
+        <th>Claude Max 5x</th>
+        <th style="background:rgba(212,168,83,0.12)"><strong>🌸 花园 Code</strong></th>
+      </tr>
+      <tr>
+        <td style="text-align:left">月费</td>
+        <td>¥145</td>
+        <td>¥725</td>
+        <td class="highlight"><strong>≈¥30</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align:left">年费</td>
+        <td>¥1,740+</td>
+        <td>¥8,700+</td>
+        <td class="highlight"><strong>¥460</strong></td>
+      </tr>
+      <tr>
+        <td style="text-align:left">需海外支付</td>
+        <td class="cross">❌ 需要</td>
+        <td class="cross">❌ 需要</td>
+        <td class="highlight check">✅ 不需要</td>
+      </tr>
+      <tr>
+        <td style="text-align:left">需要自己安装配置</td>
+        <td class="cross">❌ 需要</td>
+        <td class="cross">❌ 需要</td>
+        <td class="highlight check">✅ 远程装好</td>
+      </tr>
+      <tr>
+        <td style="text-align:left">图形中文界面</td>
+        <td class="cross">❌ 终端英文</td>
+        <td class="cross">❌ 终端英文</td>
+        <td class="highlight check">✅ 全中文 Web</td>
+      </tr>
+      <tr>
+        <td style="text-align:left">装完有人管</td>
+        <td class="cross">❌ 没有</td>
+        <td class="cross">❌ 没有</td>
+        <td class="highlight check">✅ 有问必答</td>
+      </tr>
+    </table>
+  </div>
+
+  <!-- ═══ 定价 ═══ -->
+  <div class="pricing">
+    <h2>🌸 定价方案</h2>
+    <div class="pricing-grid">
+      <div class="price-card">
+        <h3>免费试用</h3>
+        <div class="desc">先试试再说</div>
+        <div class="price">¥0</div>
+        <div class="unit">7 天</div>
+        <ul>
+          <li>全功能体验</li>
+          <li>无需海外支付</li>
+          <li>到期再决定</li>
+        </ul>
+        <a href="#download" class="btn-primary btn-small">开始试用</a>
+      </div>
+
+      <div class="price-card featured">
+        <div class="pop">推荐</div>
+        <h3>知识星球</h3>
+        <div class="desc">授权 + 内容 + 社群</div>
+        <div class="price">¥365</div>
+        <div class="unit">/ 年</div>
+        <ul>
+          <li>Agent 花园 Code 授权</li>
+          <li>全中文 Web UI</li>
+          <li>一年内容更新</li>
+          <li>社群答疑</li>
+          <li>安装服务会员价 <strong>¥95</strong></li>
+        </ul>
+        <a href="https://t.zsxq.com/CbmwO" class="btn-primary btn-small">🌸 加入星球</a>
+      </div>
+
+      <div class="price-card">
+        <h3>远程安装</h3>
+        <div class="desc">不想自己折腾</div>
+        <div class="price">¥199</div>
+        <div class="unit">/ 一次</div>
+        <ul>
+          <li>远程装好 Claude Code</li>
+          <li>配好 DeepSeek 后端</li>
+          <li>装好 Web UI</li>
+          <li>终生使用</li>
+          <li style="color:#d4a853">🌟 会员仅 ¥95</li>
+        </ul>
+        <a href="https://t.zsxq.com/CbmwO" class="btn-secondary btn-small">加入星球享会员价</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ═══ 下载/试用 ═══ -->
+  <div class="cta-section" id="download">
+    <h2>📦 免费试用 7 天</h2>
+    <p>下载安装包，双击运行。全功能试用 7 天，满意再付费。</p>
+    <p style="font-size:13px;color:#b8a88a;margin-bottom:16px">支持 Windows 10/11 · 正在开发 Mac 版</p>
+    <a href="#" class="btn-primary" onclick="alert('安装包正在打包，稍后开放下载。先加入知识星球获取第一时间通知。')">⬇️ 下载试用版</a>
+    <p style="margin-top:12px;font-size:13px;color:#b8a88a">试用到期后，加入知识星球 ¥365/年 继续使用</p>
+  </div>
+
+  <!-- ═══ FAQ ═══ -->
+  <div class="faq">
+    <h2>❓ 常见问题</h2>
+    <div class="faq-item">
+      <div class="faq-q">跟 Claude 官方有什么区别？</div>
+      <div class="faq-a">我们用的是 DeepSeek V4 Flash 后端，价格是官方的 1/50。功能上你得到的是 Claude Code 的完整能力，加上了中文 Web UI、国内网络直连、远程安装服务。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">试用期到了会怎么样？</div>
+      <div class="faq-a">7 天后会弹出引导页面，提示加入知识星球续费。你的数据不会丢失，续费后继续使用。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">以后每个月还要交钱吗？</div>
+      <div class="faq-a">远程安装服务是一次性费用，终生使用。知识星球 ¥365/年，续费星球的费用远低于官方每月 $20。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">安装复杂吗？</div>
+      <div class="faq-a">双击 install.bat，等 5-15 分钟就好。也可以付安装费我们远程帮你装。</div>
+    </div>
+    <div class="faq-item">
+      <div class="faq-q">有问题找谁？</div>
+      <div class="faq-a">加入知识星球，Agent 亲自回答你的问题。有官网、有社群，不是装完就不管的。</div>
+    </div>
+  </div>
+
+  <!-- ═══ Footer ═══ -->
+  <div class="footer">
+    <p><a href="/" style="color:#b8a88a;text-decoration:none">Agent 花园</a> · 六个 Agent 的家</p>
+    <p style="margin-top:4px">🇨🇳 全中文 · 低门槛 · 让每个人都能用上顶级 AI</p>
+  </div>
+
+</div>
+
+</body>
+</html>
