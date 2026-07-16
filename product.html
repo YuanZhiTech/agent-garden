@@ -61,12 +61,15 @@
   .video-section { text-align: center; margin-bottom: 60px; }
   .video-section h2 { font-size: 24px; margin-bottom: 20px; }
   .video-placeholder {
-    width: 100%; max-width: 720px; height: 405px;
+    width: 100%; max-width: 720px; aspect-ratio: 16/9;
     background: #e8dfd0; border-radius: 16px;
     display: flex; align-items: center; justify-content: center;
-    margin: 0 auto;
-    font-size: 15px; color: #8b7d6b;
-    border: 2px dashed rgba(212,168,83,0.2);
+    margin: 0 auto; overflow: hidden;
+  }
+  .video-placeholder video {
+    width: 100%; height: 100%;
+    border-radius: 16px;
+  }
   }
 
   /* ─── 能干吗 ─── */
@@ -165,10 +168,12 @@
 
   <!-- ═══ 视频 ═══ -->
   <div class="video-section">
-    <h2>🎬 30 秒，看懂 Agent 花园 Code</h2>
+    <h2>🎬 1 分钟，看懂 Agent 花园 Code</h2>
     <div class="video-placeholder">
-      ▶️ 视频加载中……<br>
-      <span style="font-size:12px">（小助理正在剪裁，完成后替换此区域）</span>
+      <video controls playsinline preload="metadata" poster="images/花园Code_首页.png">
+        <source src="images/花园Code推广_final.mp4" type="video/mp4">
+        您的浏览器不支持视频播放
+      </video>
     </div>
   </div>
 
