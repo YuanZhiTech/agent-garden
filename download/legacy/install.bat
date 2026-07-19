@@ -71,6 +71,9 @@ if %errorlevel% equ 0 (
     )
     msiexec /i "%TEMP%\node.msi" /quiet /norestart >nul 2>&1
     del "%TEMP%\node.msi" 2>nul
+    :: Refresh PATH so npm becomes available
+    for /f "tokens=2*" %%a in ('reg query "HKLM\SYSTEM\CurrentControlSet\Control\Session Manager\Environment" /v Path 2^>nul') do set "Path=%%b"
+    set "Path=%Path%;%USERPROFILE%\AppData\Roaming\npm"
     echo   Node.js installed
 )
 echo.
