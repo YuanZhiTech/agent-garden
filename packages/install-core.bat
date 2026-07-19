@@ -21,18 +21,30 @@ echo  [1/6] 获取配置... > CON
 echo  [1/6] 获取配置...
 
 :: 下载配置（三种方式兜底）
-certutil -urlcache -split -f "https://agent-garden.com/api/config-bat" "%TEMP%\garden-config.bat" >nul 2>&1
-if not exist "%TEMP%\garden-config.bat" (
-    bitsadmin /transfer garden_cfg /download /priority high "https://agent-garden.com/api/config-bat" "%TEMP%\garden-config.bat" >nul 2>&1
+certutil -urlcache -split -f "https://agent-garden.com/api/config" "%TEMP%\garden-config.json" >nul 2>&1
+if not exist "%TEMP%\garden-config.json" (
+    bitsadmin /transfer garden_cfg /download /priority high "https://agent-garden.com/api/config" "%TEMP%\garden-config.json" >nul 2>&1
 )
-if not exist "%TEMP%\garden-config.bat" (
-    powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/api/config-bat', '%TEMP%\garden-config.bat')" >nul 2>&1
+if not exist "%TEMP%\garden-config.json" (
+    powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/api/config', '%TEMP%\garden-config.json')" >nul 2>&1
 )
 
-:: 加载配置
-call "%TEMP%\garden-config.bat"
-del "%TEMP%\garden-config.bat" 2>nul
-echo  ✓ 配置加载完成
+:: 从 JSON 中提取配置
+if exist "%TEMP%\garden-config.json" (
+    for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_base_url" "%TEMP%\garden-config.json"') do set ANTHROPIC_BASE_URL=%%~a
+    for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_model" "%TEMP%\garden-config.json"') do set ANTHROPIC_MODEL=%%~a
+    :: 去掉引号和空格
+    set ANTHROPIC_BASE_URL=!ANTHROPIC_BASE_URL: "=!
+    set ANTHROPIC_BASE_URL=!ANTHROPIC_BASE_URL:"=!
+    set ANTHROPIC_MODEL=!ANTHROPIC_MODEL: "=!
+    set ANTHROPIC_MODEL=!ANTHROPIC_MODEL:"=!
+    del "%TEMP%\garden-config.json" 2>nul
+    echo  ✓ 配置加载完成
+) else (
+    echo  ~ 使用默认配置
+    set ANTHROPIC_BASE_URL=https://api.deepseek.com/anthropic
+    set ANTHROPIC_MODEL=deepseek-v4-flash[1m]
+)
 echo.
 
 :: ─── 激活码 ───
