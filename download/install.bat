@@ -60,40 +60,73 @@ if %errorlevel% neq 0 (
 echo   ✓ 系统检查通过
 
 :: ═══════════════════════════════════════════════
-::  3. 欢迎页面 + 输入 DeepSeek Key
+::  3. 激活码验证
 :: ═══════════════════════════════════════════════
-:greeting
+:verify_code
 cls
 echo  ╔══════════════════════════════════════════╗
 echo  ║       Agent花园 Code · 一键安装           ║
 echo  ╚══════════════════════════════════════════╝
 echo.
-echo  安装过程中请勿关闭本窗口
-echo  预计耗时：5-15 分钟（视网速而定）
+echo  ────────────────────────────────────────────
+echo  🔑 激活码验证
+echo  ────────────────────────────────────────────
+echo.
+echo  请输入您购买后收到的激活码
+echo  格式：AG-XXXXXXXX-XXXXXXXX
+echo.
+set /p ACTIVATION_CODE=激活码:
+if "%ACTIVATION_CODE%"=="" (
+    echo   ! 激活码不能为空
+    pause
+    goto :verify_code
+)
+
+:: 尝试在线验证
+echo   > 正在验证激活码...
+curl -s --connect-timeout 5 "https://agent-garden.com/api/verify?code=%ACTIVATION_CODE%" -o "%TEMP%\verify-result.json" 2>nul
+if exist "%TEMP%\verify-result.json" (
+    findstr "true" "%TEMP%\verify-result.json" >nul 2>&1
+    if !errorlevel! equ 0 (
+        echo   ✓ 激活码验证通过
+    ) else (
+        echo   ! 激活码无效，请联系客服
+        pause
+        exit /b 1
+    )
+) else (
+    echo   ⚠ 无法连接验证服务器（网络问题）
+    echo     激活码将稍后验证
+)
+echo.
+
+:: ═══════════════════════════════════════════════
+::  4. 输入 DeepSeek Key
+:: ═══════════════════════════════════════════════
+:get_deepseek_key
+cls
+echo  ╔══════════════════════════════════════════╗
+echo  ║       Agent花园 Code · 一键安装           ║
+echo  ╚══════════════════════════════════════════╝
 echo.
 echo  ────────────────────────────────────────────
-echo  🔑 请准备你的 DeepSeek API Key
+echo  🔑 请输入你的 DeepSeek API Key
 echo  ────────────────────────────────────────────
 echo.
 echo  在 DeepSeek 官网注册并创建 Key：
 echo  https://platform.deepseek.com/api_keys
 echo.
-echo  还没有 Key？现在去注册，3 分钟就好。
+echo  还没有？3 分钟注册一个
 echo.
-set /p DEEPSEEK_KEY=请输入 DeepSeek API Key（粘贴后按回车）:
+set /p DEEPSEEK_KEY=DeepSeek API Key:
 if "%DEEPSEEK_KEY%"=="" (
-    echo   ! Key 不能为空，请重新输入
+    echo   ! Key 不能为空
     pause
-    goto :greeting
+    goto :get_deepseek_key
 )
-cls
-echo  ╔══════════════════════════════════════════╗
-echo  ║       Agent花园 Code · 一键安装           ║
-echo  ╚══════════════════════════════════════════╝
 echo.
-echo  ✓ DeepSeek Key 已录入，开始安装...
+echo  ✓ 准备就绪，开始安装...
 echo.
-pause
 
 :: ═══════════════════════════════════════════════
 ::  4. 安装 Node.js
