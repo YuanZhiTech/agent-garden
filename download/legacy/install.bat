@@ -1,20 +1,15 @@
 @echo off
 setlocal enabledelayedexpansion
-:: Agent花园 Code - Win7/Win8 兼容版安装脚本
-:: 不依赖 PowerShell，使用基本系统命令
-
 cd /d "%TEMP%"
-chcp 65001 >nul 2>&1
 
 echo.
-echo ╔══════════════════════════════════════════╗
-echo ║   Agent花园 Code · 兼容版安装程序        ║
-echo ║   支持 Windows 7 / 8 / 10 / 11           ║
-echo ╚══════════════════════════════════════════╝
+echo ============================================
+echo   AgentGarden Code - Setup
+echo ============================================
 echo.
 
-:: ─── 获取核心配置（curl下载） ───
-echo [1/5] 获取配置...
+:: --- Step 1: Get config ---
+echo [1/5] Getting config...
 curl -s -o "%TEMP%\garden-cfg.json" "https://agent-garden.com/api/config"
 if exist "%TEMP%\garden-cfg.json" (
     for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_base_url" "%TEMP%\garden-cfg.json"') do set "BASE_URL=%%~a"
@@ -24,90 +19,87 @@ if exist "%TEMP%\garden-cfg.json" (
     set MODEL=!MODEL: =!
     set MODEL=!MODEL:"=!
     del "%TEMP%\garden-cfg.json" 2>nul
-    echo   ✓ 配置已获取
+    echo   OK
 ) else (
-    echo   ~ 使用默认配置
+    echo   Using defaults
     set "BASE_URL=https://api.deepseek.com/anthropic"
     set "MODEL=deepseek-v4-flash[1m]"
 )
 echo.
 
-:: ─── 激活码 ───
-set /p ACTIVATION_CODE=请输入激活码:
+:: --- Step 2: Activation code ---
+set /p ACTIVATION_CODE=Enter activation code:
 if "%ACTIVATION_CODE%"=="" (
-    echo   激活码不能为空
-    pause & exit /b 1
+    echo Code required. & pause & exit /b 1
 )
 
-:: 验证激活码
 curl -s -o "%TEMP%\garden-vr.json" "https://agent-garden.com/api/verify?code=%ACTIVATION_CODE%"
 if exist "%TEMP%\garden-vr.json" (
     findstr "true" "%TEMP%\garden-vr.json" >nul && (
-        echo   ✓ 激活码验证通过
+        echo   Activation OK
     ) || (
-        echo   ! 激活码无效 & pause & exit /b 1
+        echo   Invalid code & pause & exit /b 1
     )
     del "%TEMP%\garden-vr.json" 2>nul
 ) else (
-    echo   ~ 跳过验证
+    echo   Offline mode - skip verify
 )
 echo.
 
-:: ─── DeepSeek Key ───
-set /p DEEPSEEK_KEY=请输入 DeepSeek API Key:
+:: --- Step 3: DeepSeek Key ---
+set /p DEEPSEEK_KEY=Enter your DeepSeek API Key:
 if "%DEEPSEEK_KEY%"=="" (
-    echo   Key 不能为空 & pause & exit /b 1
+    echo Key required & pause & exit /b 1
 )
 echo.
 
-:: ─── 安装 Node.js ───
-echo [2/5] 安装 Node.js...
+:: --- Step 4: Install Node.js ---
+echo [2/5] Node.js...
 where node >nul 2>&1
 if %errorlevel% equ 0 (
-    for /f "tokens=*" %%i in ('node -v') do echo   ✓ Node.js %%i 已安装
+    for /f "tokens=*" %%i in ('node -v') do echo   Node.js %%i found
 ) else (
-    echo   正在下载...
+    echo   Downloading Node.js...
     curl -L -o "%TEMP%\node.msi" "https://npmmirror.com/mirrors/node/v22.14.0/node-v22.14.0-x64.msi"
     if not exist "%TEMP%\node.msi" (
         curl -L -o "%TEMP%\node.msi" "https://nodejs.org/dist/v22.14.0/node-v22.14.0-x64.msi"
     )
     if not exist "%TEMP%\node.msi" (
-        echo   ! 下载失败，请手动安装 Node.js
+        echo   Download failed
         start https://nodejs.org/
         pause & exit /b 1
     )
     msiexec /i "%TEMP%\node.msi" /quiet /norestart >nul 2>&1
     del "%TEMP%\node.msi" 2>nul
-    echo   ✓ Node.js 安装成功
+    echo   Node.js installed
 )
 echo.
 
-:: ─── 安装 Claude Code ───
-echo [3/5] 安装 Claude Code...
+:: --- Step 5: Install Claude Code ---
+echo [3/5] Claude Code...
 npm config set registry https://registry.npmmirror.com >nul 2>&1
 where claude >nul 2>&1
 if %errorlevel% equ 0 (
-    echo   ✓ Claude Code 已安装
+    echo   Claude Code already installed
 ) else (
     call npm install -g @anthropic-ai/claude-code
-    echo   ✓ Claude Code 安装完成
+    echo   Claude Code installed
 )
 echo.
 
-:: ─── 安装 Web UI ───
-echo [4/5] 安装 Web UI...
+:: --- Step 6: Web UI ---
+echo [4/5] Web UI...
 set "GARDEN_DIR=%USERPROFILE%\agent-garden-code"
 if not exist "%GARDEN_DIR%" mkdir "%GARDEN_DIR%"
 cd /d "%GARDEN_DIR%"
 call npm install @fenton/ccwebui >nul 2>&1
-echo   ✓ Web UI 安装完成
+echo   Web UI installed
 echo.
 
-:: ─── 写入配置 ───
-echo [5/5] 写入配置...
+:: --- Step 7: Write config ---
+echo [5/5] Writing config...
 if not exist "%USERPROFILE%\.claude" mkdir "%USERPROFILE%\.claude"
 
-:: 用 echo 写入配置文件（不依赖 PowerShell）
 (
 echo {
 echo   "env": {
@@ -119,10 +111,10 @@ echo   },
 echo   "theme": "dark"
 echo }
 ) > "%USERPROFILE%\.claude\settings.json"
-echo   ✓ 配置已写入
+echo   Config written
 echo.
 
-:: ─── 创建快捷方式 ───
+:: --- Step 8: Shortcut ---
 cd /d "%GARDEN_DIR%"
 (
 echo @echo off
@@ -134,27 +126,27 @@ echo pause
 set "DESKTOP=%USERPROFILE%\Desktop"
 (
 echo Set WshShell = WScript.CreateObject("WScript.Shell"^)
-echo Set Shortcut = WshShell.CreateShortcut("%DESKTOP%\Agent花园 Code.lnk"^)
+echo Set Shortcut = WshShell.CreateShortcut("%DESKTOP%\AgentGarden Code.lnk"^)
 echo Shortcut.TargetPath = "%GARDEN_DIR%\start-garden.bat"
 echo Shortcut.WorkingDirectory = "%GARDEN_DIR%"
 echo Shortcut.Save
 ) > "%TEMP%\mklnk.vbs"
 cscript "%TEMP%\mklnk.vbs" >nul 2>&1
 del "%TEMP%\mklnk.vbs" 2>nul
-echo   ✓ 快捷方式已创建
+echo   Shortcut created
 echo.
 
-:: ─── 完成 ───
+:: --- Done ---
 cls
 echo.
-echo ╔══════════════════════════════════════════╗
-echo ║   Agent花园 Code 安装完成！              ║
-echo ╚══════════════════════════════════════════╝
+echo ============================================
+echo   AgentGarden Code - Installation Complete!
+echo ============================================
 echo.
-echo 双击桌面「Agent花园 Code」启动
+echo   Double-click desktop "AgentGarden Code" to start
 echo.
-echo   📞 微信: yuhuashi7271
-echo   📧 邮箱: contact@agent-garden.com
+echo   WeChat: yuhuashi7271
+echo   Email: contact@agent-garden.com
 echo.
 pause
 endlocal
