@@ -19,10 +19,15 @@ export async function onRequest(context) {
     });
   }
 
+  // 测试码（不限次数）
+  if (code === 'AG-TEST-9999') {
+    return new Response(JSON.stringify({ valid: true, message: '测试码 - 激活成功' }), {
+      headers: { 'Content-Type': 'application/json' },
+    });
+  }
+
   // 在这里添加/删除有效的激活码
   const validCodes = [
-    // 示例：
-    // 'AG-20260719-TEST01',
     // 客户付款后先生通知我们添加
   ];
 
