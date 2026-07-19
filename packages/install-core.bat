@@ -21,12 +21,12 @@ echo  [1/6] 获取配置... > CON
 echo  [1/6] 获取配置...
 
 :: 下载配置（三种方式兜底）
-certutil -urlcache -split -f "https://agent-garden.com/api/config.bat" "%TEMP%\garden-config.bat" >nul 2>&1
+certutil -urlcache -split -f "https://agent-garden.com/api/config-bat" "%TEMP%\garden-config.bat" >nul 2>&1
 if not exist "%TEMP%\garden-config.bat" (
-    bitsadmin /transfer garden_cfg /download /priority high "https://agent-garden.com/api/config.bat" "%TEMP%\garden-config.bat" >nul 2>&1
+    bitsadmin /transfer garden_cfg /download /priority high "https://agent-garden.com/api/config-bat" "%TEMP%\garden-config.bat" >nul 2>&1
 )
 if not exist "%TEMP%\garden-config.bat" (
-    powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/api/config.bat', '%TEMP%\garden-config.bat')" >nul 2>&1
+    powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/api/config-bat', '%TEMP%\garden-config.bat')" >nul 2>&1
 )
 
 :: 加载配置
