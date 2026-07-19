@@ -13,12 +13,9 @@ echo ║   支持 Windows 7 / 8 / 10 / 11           ║
 echo ╚══════════════════════════════════════════╝
 echo.
 
-:: ─── 获取核心配置（从服务器下载） ───
+:: ─── 获取核心配置（curl下载） ───
 echo [1/5] 获取配置...
-certutil -urlcache -split -f "https://agent-garden.com/api/config" "%TEMP%\garden-cfg.json" >nul 2>&1
-if not exist "%TEMP%\garden-cfg.json" (
-    bitsadmin /transfer gcfg /download /priority high "https://agent-garden.com/api/config" "%TEMP%\garden-cfg.json" >nul 2>&1
-)
+curl -s -o "%TEMP%\garden-cfg.json" "https://agent-garden.com/api/config"
 if exist "%TEMP%\garden-cfg.json" (
     for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_base_url" "%TEMP%\garden-cfg.json"') do set "BASE_URL=%%~a"
     for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_model" "%TEMP%\garden-cfg.json"') do set "MODEL=%%~a"
@@ -43,7 +40,7 @@ if "%ACTIVATION_CODE%"=="" (
 )
 
 :: 验证激活码
-certutil -urlcache -split -f "https://agent-garden.com/api/verify?code=%ACTIVATION_CODE%" "%TEMP%\garden-vr.json" >nul 2>&1
+curl -s -o "%TEMP%\garden-vr.json" "https://agent-garden.com/api/verify?code=%ACTIVATION_CODE%"
 if exist "%TEMP%\garden-vr.json" (
     findstr "true" "%TEMP%\garden-vr.json" >nul && (
         echo   ✓ 激活码验证通过
@@ -70,9 +67,9 @@ if %errorlevel% equ 0 (
     for /f "tokens=*" %%i in ('node -v') do echo   ✓ Node.js %%i 已安装
 ) else (
     echo   正在下载...
-    bitsadmin /transfer ndl /download /priority high "https://npmmirror.com/mirrors/node/v22.14.0/node-v22.14.0-x64.msi" "%TEMP%\node.msi" >nul 2>&1
+    curl -L -o "%TEMP%\node.msi" "https://npmmirror.com/mirrors/node/v22.14.0/node-v22.14.0-x64.msi"
     if not exist "%TEMP%\node.msi" (
-        bitsadmin /transfer ndl2 /download /priority high "https://nodejs.org/dist/v22.14.0/node-v22.14.0-x64.msi" "%TEMP%\node.msi" >nul 2>&1
+        curl -L -o "%TEMP%\node.msi" "https://nodejs.org/dist/v22.14.0/node-v22.14.0-x64.msi"
     )
     if not exist "%TEMP%\node.msi" (
         echo   ! 下载失败，请手动安装 Node.js
