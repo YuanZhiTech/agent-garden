@@ -5,23 +5,28 @@
 <style>
 *{margin:0;padding:0;box-sizing:border-box}
 body{background:#f5f0e8;font-family:"PingFang SC","Noto Sans SC",system-ui,sans-serif;color:#2d2a26;padding:60px 20px}
-.box{max-width:600px;margin:0 auto;background:#fff;border-radius:16px;padding:40px;border:1px solid rgba(212,168,83,0.15)}
+.box{max-width:620px;margin:0 auto;background:#fff;border-radius:16px;padding:40px;border:1px solid rgba(212,168,83,0.15)}
 h1{font-size:24px;margin-bottom:8px;color:#2d2a26}
 p{font-size:14px;color:#5a5650;line-height:1.7;margin-bottom:16px}
 .step{background:#f8f4ec;border-radius:10px;padding:16px;margin:12px 0;font-size:14px}
 .step strong{color:#d4a853}
-.btn{display:inline-block;background:linear-gradient(135deg,#d4a853,#c49a40);color:#fff;font-size:16px;font-weight:600;padding:14px 40px;border-radius:30px;text-decoration:none;margin:16px 0;box-shadow:0 4px 16px rgba(212,168,83,0.3)}
+.btn{display:inline-block;background:linear-gradient(135deg,#d4a853,#c49a40);color:#fff;font-size:16px;font-weight:600;padding:14px 40px;border-radius:30px;text-decoration:none;margin:8px 0;box-shadow:0 4px 16px rgba(212,168,83,0.3)}
 .btn:hover{transform:translateY(-1px)}
+.btn-outline{display:inline-block;background:#fff;color:#d4a853;font-size:16px;font-weight:600;padding:14px 40px;border-radius:30px;text-decoration:none;margin:8px 0;border:2px solid #d4a853}
+.btn-outline:hover{background:#fbf6ea}
 .note{font-size:12px;color:#b8a88a;margin-top:12px}
+.btns{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;margin:16px 0}
+@media(max-width:500px){.btns{flex-direction:column;align-items:center}}
 </style>
 </head>
 <body>
 <div class="box">
   <h1>📦 Agent花园·Code 安装包</h1>
-  <p>专为已付费客户提供。下载后双击运行，跟着提示走就行。</p>
+  <p>专为已付费客户提供。选择你的系统下载，双击运行，跟着提示走就行。</p>
 
-  <div style="text-align:center">
-    <a href="install.bat" class="btn">⬇️ 下载安装包 (install.bat)</a>
+  <div class="btns">
+    <a href="install.bat" class="btn">🪟 下载 Windows 版</a>
+    <a href="install.sh" class="btn-outline">🍎 下载 Mac 版</a>
   </div>
 
   <div class="step">
@@ -32,16 +37,15 @@ p{font-size:14px;color:#5a5650;line-height:1.7;margin-bottom:16px}
 
   <div class="step">
     <strong>📋 安装步骤：</strong><br>
-    1. 下载上面的 install.bat<br>
-    2. 右键 → "以管理员身份运行"<br>
-    3. 按提示粘贴你的 DeepSeek API Key<br>
-    4. 等待 5-15 分钟安装完成
+    <strong>Windows：</strong>右键 install.bat → "以管理员身份运行"<br>
+    <strong>Mac：</strong>终端运行 chmod +x install.sh && ./install.sh<br>
+    按提示粘贴 DeepSeek API Key → 等待 5-15 分钟
   </div>
 
   <div class="step">
     <strong>❓ 遇到问题？</strong><br>
-    联系微信：yuhuashi7271（Agent花园客服）<br>
-    或发邮件：contact@agent-garden.com
+    微信：yuhuashi7271（Agent花园客服）<br>
+    邮件：contact@agent-garden.com
   </div>
 
   <p class="note">本安装包仅限授权用户使用 · Agent花园</p>
