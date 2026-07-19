@@ -8,5 +8,14 @@ echo ╚════════════════════════
 echo.
 echo  正在获取安装包，请稍候...
 echo.
-powershell -ExecutionPolicy Bypass -Command "try { Invoke-Expression ((New-Object Net.WebClient).DownloadString('https://agent-garden.com/packages/install.ps1')) } catch { Write-Host '! 下载失败，请检查网络后重试' -ForegroundColor Red; $null = $Host.UI.RawUI.ReadKey() }"
+
+:: 第一步：下载安装脚本到临时目录
+powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/packages/install.ps1', '%TEMP%\garden-install.ps1')"
+
+:: 第二步：执行安装脚本
+powershell -ExecutionPolicy Bypass -File "%TEMP%\garden-install.ps1"
+
+:: 第三步：清理临时文件
+del "%TEMP%\garden-install.ps1" 2>nul
+
 pause
