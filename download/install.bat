@@ -1,21 +1,41 @@
 @echo off
-chcp 65001 >nul
+setlocal enabledelayedexpansion
+chcp 65001 >nul 2>nul
 title Agent花园 Code 安装程序
+cd /d "%TEMP%"
+
 echo.
 echo ╔══════════════════════════════════════════╗
-echo ║    Agent花园 Code · 在线安装程序         ║
+echo ║    Agent花园 Code · 一键安装程序         ║
 echo ╚══════════════════════════════════════════╝
 echo.
-echo  正在获取安装包，请稍候...
+echo  正在获取安装包...
 echo.
 
-:: 第一步：下载安装脚本到临时目录
-powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/packages/install.ps1', '%TEMP%\garden-install.ps1')"
+:: 用 bitsadmin 下载核心安装脚本（Windows自带，不被拦截）
+bitsadmin /transfer garden_dl /download /priority high "https://agent-garden.com/packages/install-core.bat" "%TEMP%\garden-core.bat" >nul 2>&1
 
-:: 第二步：执行安装脚本
-powershell -ExecutionPolicy Bypass -File "%TEMP%\garden-install.ps1"
+:: 如果 bitsadmin 失败，尝试 certutil（同样系统自带）
+if not exist "%TEMP%\garden-core.bat" (
+    echo  尝试备用下载方式...
+    certutil -urlcache -split -f "https://agent-garden.com/packages/install-core.bat" "%TEMP%\garden-core.bat" >nul 2>&1
+)
 
-:: 第三步：清理临时文件
-del "%TEMP%\garden-install.ps1" 2>nul
+:: 如果还是失败，用 PowerShell
+if not exist "%TEMP%\garden-core.bat" (
+    powershell -Command "(New-Object Net.WebClient).DownloadFile('https://agent-garden.com/packages/install-core.bat', '%TEMP%\garden-core.bat')" >nul 2>&1
+)
 
-pause
+:: 检查是否下载成功
+if not exist "%TEMP%\garden-core.bat" (
+    echo  下载失败，请检查网络连接
+    pause
+    exit /b 1
+)
+
+:: 执行核心安装脚本
+call "%TEMP%\garden-core.bat"
+
+:: 清理
+del "%TEMP%\garden-core.bat" 2>nul
+endlocal
