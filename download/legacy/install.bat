@@ -27,10 +27,11 @@ if exist "%TEMP%\garden-cfg.json" (
 )
 echo.
 
-:: --- Step 2: Activation code ---
-set /p ACTIVATION_CODE=Enter activation code:
+:: --- Step 2: Activation code (optional) ---
+set /p ACTIVATION_CODE=Activation code (optional, press Enter to skip):
 if "%ACTIVATION_CODE%"=="" (
-    echo Code required. & pause & exit /b 1
+    echo   Skipping activation
+    goto :skip_activation
 )
 
 curl -s -o "%TEMP%\garden-vr.json" "https://agent-garden.com/api/verify?code=%ACTIVATION_CODE%"
@@ -45,7 +46,12 @@ if exist "%TEMP%\garden-vr.json" (
     echo   Offline mode - skip verify
 )
 echo.
+goto :after_activation
 
+:skip_activation
+echo.
+
+:after_activation
 :: --- Step 3: DeepSeek Key ---
 set /p DEEPSEEK_KEY=Enter your DeepSeek API Key:
 if "%DEEPSEEK_KEY%"=="" (
