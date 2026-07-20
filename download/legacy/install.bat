@@ -8,23 +8,11 @@ echo   AgentGarden Code - Setup
 echo ============================================
 echo.
 
-:: --- Step 1: Get config ---
-echo [1/5] Getting config...
-curl -s -o "%TEMP%\garden-cfg.json" "https://agent-garden.com/api/config"
-if exist "%TEMP%\garden-cfg.json" (
-    for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_base_url" "%TEMP%\garden-cfg.json"') do set "BASE_URL=%%~a"
-    for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_model" "%TEMP%\garden-cfg.json"') do set "MODEL=%%~a"
-    set BASE_URL=!BASE_URL: =!
-    set BASE_URL=!BASE_URL:"=!
-    set MODEL=!MODEL: =!
-    set MODEL=!MODEL:"=!
-    del "%TEMP%\garden-cfg.json" 2>nul
-    echo   OK
-) else (
-    echo   Using defaults
-    set "BASE_URL=https://api.deepseek.com/anthropic"
-    set "MODEL=deepseek-v4-flash[1m]"
-)
+:: --- Step 1: Config ---
+echo [1/5] Configuring...
+set "BASE_URL=https://api.deepseek.com/anthropic"
+set "MODEL=deepseek-v4-flash[1m]"
+echo   OK
 echo.
 
 :: --- Step 2: Activation code (optional) ---
