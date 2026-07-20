@@ -119,7 +119,8 @@ echo cd /d "%%~dp0"
 echo set ANTHROPIC_BASE_URL=!BASE_URL!
 echo set ANTHROPIC_AUTH_TOKEN=!DEEPSEEK_KEY!
 echo set ANTHROPIC_MODEL=!MODEL!
-echo npx @fenton/ccwebui -p 3000
+echo start http://localhost:3000
+echo claude --url --dangerously-skip-permissions
 echo pause
 ) > start-garden.bat
 
