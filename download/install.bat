@@ -9,21 +9,10 @@ echo ============================================
 echo.
 
 :: --- Step 1: Config ---
-echo [1/5] Getting config...
+echo [1/5] Configuring...
 set "BASE_URL=https://api.deepseek.com/anthropic"
 set "MODEL=deepseek-v4-flash[1m]"
-
-powershell -Command "try{$w=New-Object Net.WebClient;$d=$w.DownloadString('https://agent-garden.com/api/config');$d|Out-File -Encoding utf8 '%TEMP%\garden-cfg.json'}catch{}" >nul 2>&1
-if exist "%TEMP%\garden-cfg.json" (
-    for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_base_url" "%TEMP%\garden-cfg.json"') do set "BASE_URL=%%~a"
-    for /f "tokens=2 delims=:," %%a in ('findstr "anthropic_model" "%TEMP%\garden-cfg.json"') do set "MODEL=%%~a"
-    set "BASE_URL=!BASE_URL: =!" & set "BASE_URL=!BASE_URL:"=!"
-    set "MODEL=!MODEL: =!" & set "MODEL=!MODEL:"=!"
-    del "%TEMP%\garden-cfg.json" 2>nul
-    echo   Config loaded
-) else (
-    echo   Using defaults
-)
+echo   OK
 echo.
 
 :: --- Step 2: Activation (optional) ---
