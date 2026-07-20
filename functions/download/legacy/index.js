@@ -25,8 +25,8 @@ export async function onRequest(context) {
     });
   }
 
-  // 检查是否请求 .bat 文件或便携版分卷（允许直接下载）
-  if (url.pathname.endsWith('.bat') || url.pathname.startsWith('/download/legacy/portable/')) {
+  // 检查是否请求 .bat 文件（允许直接下载）
+  if (url.pathname.endsWith('.bat')) {
     const resp = await context.env.ASSETS.fetch(context.request);
     return resp;
   }
