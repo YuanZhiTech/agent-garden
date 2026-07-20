@@ -41,6 +41,38 @@ echo }
 
 echo Config written successfully!
 echo.
-echo To start: Double-click desktop "AgentGarden Code" shortcut
+echo Creating desktop shortcut...
+
+:: Create start script with correct command
+set "GARDEN_DIR=%USERPROFILE%\agent-garden-code"
+(
+echo @echo off
+echo cd /d "%GARDEN_DIR%"
+echo echo Starting AgentGarden Code Web UI...
+echo echo Open http://localhost:3000 in your browser
+echo start http://localhost:3000
+echo npx @fenton/ccwebui -p 3000
+echo pause
+) > "%GARDEN_DIR%\start-garden.bat"
+
+:: Create desktop shortcut
+set "DESKTOP=%USERPROFILE%\Desktop"
+(
+echo Set WshShell = WScript.CreateObject("WScript.Shell"^)
+echo Set Shortcut = WshShell.CreateShortcut("%DESKTOP%\AgentGarden Code.lnk"^)
+echo Shortcut.TargetPath = "%GARDEN_DIR%\start-garden.bat"
+echo Shortcut.WorkingDirectory = "%GARDEN_DIR%"
+echo Shortcut.Save
+) > "%TEMP%\mklnk.vbs"
+cscript "%TEMP%\mklnk.vbs" >nul 2>&1
+del "%TEMP%\mklnk.vbs" 2>nul
+
+echo.
+echo ============================================
+echo   All done!
+echo ============================================
+echo.
+echo   Double-click desktop "AgentGarden Code"
+echo   to start the Web UI.
 echo.
 pause

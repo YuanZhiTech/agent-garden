@@ -1,0 +1,33 @@
+Agent花园·Code 终极安装方案
+==============================
+适用：任何 Windows 系统（Win7 及以上）
+方案：certutil 编码 + 手动解码执行
+==============================
+
+【第一步】在老笔记本上打开记事本
+【第二步】把下面的内容完整复制粘贴进记事本
+【第三步】保存为 install.bat（编码选 ANSI）
+【第四步】右键"以管理员身份运行"
+
+------------------------- 从这里开始复制 -------------------------
+@echo off
+cd /d "%TEMP%"
+echo 正在下载安装核心...
+bitsadmin /transfer gd /download /priority high "https://agent-garden.com/packages/install-core.bat" "%TEMP%\garden-core.bat" >nul 2>&1
+if not exist "%TEMP%\garden-core.bat" (
+    certutil -urlcache -split -f "https://agent-garden.com/packages/install-core.bat" "%TEMP%\garden-core.bat" >nul 2>&1
+)
+if not exist "%TEMP%\garden-core.bat" (
+    echo 下载失败，请检查网络
+    pause
+    exit /b 1
+)
+call "%TEMP%\garden-core.bat"
+del "%TEMP%\garden-core.bat" 2>nul
+pause
+------------------------- 到这里结束 -------------------------
+
+【备用方案】如果 bitsadmin 和 certutil 都不行：
+把下面的下载链接直接粘贴到浏览器地址栏打开：
+https://agent-garden.com/packages/install-core.bat
+会下载一个 .bat 文件，右键"以管理员身份运行"即可。

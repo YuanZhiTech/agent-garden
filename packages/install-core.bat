@@ -172,7 +172,7 @@ cd /d "!GARDEN_DIR!"
 echo @echo off
 echo chcp 65001 ^>nul
 echo cd /d "%%~dp0"
-echo npx ccwebui --host 0.0.0.0 --port 3000
+echo npx @fenton/ccwebui -p 3000
 echo pause
 ) > start-garden.bat
 

@@ -139,7 +139,7 @@ $batContent = @"
 @echo off
 chcp 65001 >nul
 cd /d "$gardenDir"
-npx ccwebui --host 0.0.0.0 --port 3000
+npx @fenton/ccwebui -p 3000
 pause
 "@
 $batContent | Out-File -Encoding ascii "$gardenDir\start-garden.bat"
