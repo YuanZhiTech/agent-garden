@@ -117,11 +117,14 @@ echo }
 echo   Config written
 echo.
 
-:: --- Step 8: Shortcut ---
+:: --- Step 8: Shortcut (with DeepSeek env) ---
 cd /d "%GARDEN_DIR%"
 (
 echo @echo off
 echo cd /d "%%~dp0"
+echo set ANTHROPIC_BASE_URL=!BASE_URL!
+echo set ANTHROPIC_AUTH_TOKEN=!DEEPSEEK_KEY!
+echo set ANTHROPIC_MODEL=!MODEL!
 echo npx @fenton/ccwebui -p 3000
 echo pause
 ) > start-garden.bat
