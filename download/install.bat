@@ -123,13 +123,27 @@ echo npx @fenton/ccwebui -p 3000
 echo pause
 ) > start-garden.bat
 
+:: Download custom icon
+powershell -Command "try{$w=New-Object Net.WebClient;$w.DownloadFile('https://agent-garden.com/images/garden-icon.ico','%GARDEN_DIR%\garden-icon.ico')}catch{}" >nul 2>&1
+
+:: Create desktop shortcut with custom icon
 set "DESKTOP=%USERPROFILE%\Desktop"
-powershell -Command ^
-    "$ws = New-Object -ComObject WScript.Shell;" ^
-    "$s = $ws.CreateShortcut('%DESKTOP%\AgentGarden Code.lnk');" ^
-    "$s.TargetPath = '%GARDEN_DIR%\start-garden.bat';" ^
-    "$s.WorkingDirectory = '%GARDEN_DIR%';" ^
-    "$s.Save()" >nul 2>&1
+if exist "%GARDEN_DIR%\garden-icon.ico" (
+    powershell -Command ^
+        "$ws = New-Object -ComObject WScript.Shell;" ^
+        "$s = $ws.CreateShortcut('%DESKTOP%\AgentGarden Code.lnk');" ^
+        "$s.TargetPath = '%GARDEN_DIR%\start-garden.bat';" ^
+        "$s.IconLocation = '%GARDEN_DIR%\garden-icon.ico';" ^
+        "$s.WorkingDirectory = '%GARDEN_DIR%';" ^
+        "$s.Save()" >nul 2>&1
+) else (
+    powershell -Command ^
+        "$ws = New-Object -ComObject WScript.Shell;" ^
+        "$s = $ws.CreateShortcut('%DESKTOP%\AgentGarden Code.lnk');" ^
+        "$s.TargetPath = '%GARDEN_DIR%\start-garden.bat';" ^
+        "$s.WorkingDirectory = '%GARDEN_DIR%';" ^
+        "$s.Save()" >nul 2>&1
+)
 echo   Shortcut created
 echo.
 
