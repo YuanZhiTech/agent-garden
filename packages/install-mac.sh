@@ -1,6 +1,5 @@
 #!/bin/bash
-# Agent花园 Code - macOS 安装核心脚本
-# 由 install.sh 远程加载，在内存中执行
+# Agent花园 Code - macOS 安装程序（自包含版）
 
 set -e
 GREEN='\033[0;32m'
@@ -8,35 +7,24 @@ NC='\033[0m'
 
 echo ""
 echo "╔══════════════════════════════════════════╗"
-echo "║       Agent花园 Code · 一键安装       ║"
+echo "║       Agent花园 Code · 一键安装         ║"
 echo "╚══════════════════════════════════════════╝"
 echo ""
 
-# 获取核心配置
-echo "  获取安装配置..."
-CONFIG=$(curl -s --connect-timeout 10 https://agent-garden.com/api/config)
-ANTHROPIC_BASE_URL=$(echo $CONFIG | grep -o '"anthropic_base_url":"[^"]*"' | cut -d'"' -f4)
-ANTHROPIC_MODEL=$(echo $CONFIG | grep -o '"anthropic_model":"[^"]*"' | cut -d'"' -f4)
-echo -e "  ${GREEN}✓ 配置获取成功${NC}"
-echo ""
+# 配置
+ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+ANTHROPIC_MODEL="deepseek-v4-flash[1m]"
 
-# 激活码
-read -p "请输入激活码 (AG-XXXX-XXXX): " ACTIVATION_CODE
-echo "  验证激活码..."
-VERIFY=$(curl -s --connect-timeout 5 "https://agent-garden.com/api/verify?code=$ACTIVATION_CODE")
-if echo "$VERIFY" | grep -q '"valid":true'; then
-    echo -e "  ${GREEN}✓ 激活码验证通过${NC}"
-else
-    if echo "$VERIFY" | grep -q '"valid":false'; then
-        echo "  ! 激活码无效"
-        exit 1
-    fi
-    echo "  ~ 跳过验证（离线模式）"
-fi
+# 激活码（可选）
+read -p "激活码（没有就直接回车跳过）: " ACTIVATION_CODE
 
 # DeepSeek Key
 read -p "请输入 DeepSeek API Key: " DEEPSEEK_KEY
-echo -e "  ${GREEN}✓ Key已录入${NC}"
+if [ -z "$DEEPSEEK_KEY" ]; then
+    echo "Key 不能为空"
+    exit 1
+fi
+echo -e "  ${GREEN}✓ Key 已录入${NC}"
 echo ""
 
 # 检查 Node.js
@@ -47,8 +35,8 @@ if command -v node &>/dev/null; then
     echo -e "  ${GREEN}✓ Node.js $(node -v) 已安装${NC}"
 else
     echo "  安装 Node.js..."
-    curl -fsSL https://npmmirror.com/mirrors/node/v22.14.0/node-v22.14.0.pkg -o /tmp/node.pkg 2>/dev/null || \
-    curl -fsSL https://nodejs.org/dist/v22.14.0/node-v22.14.0.pkg -o /tmp/node.pkg
+    curl -fsSL --noproxy '*' https://npmmirror.com/mirrors/node/v22.14.0/node-v22.14.0.pkg -o /tmp/node.pkg 2>/dev/null || \
+    curl -fsSL --noproxy '*' https://nodejs.org/dist/v22.14.0/node-v22.14.0.pkg -o /tmp/node.pkg
     sudo installer -pkg /tmp/node.pkg -target / 2>/dev/null
     echo -e "  ${GREEN}✓ Node.js 安装成功${NC}"
 fi
@@ -66,16 +54,11 @@ else
     echo -e "  ${GREEN}✓ Claude Code 安装成功${NC}"
 fi
 
-# 安装 Web UI + 写入配置
+# 写入配置
 echo ""
 echo "────────────────────────────────────────────"
-echo "[3/3] 配置 Web UI"
+echo "[3/3] 写入配置 + 创建启动器"
 echo "────────────────────────────────────────────"
-GARDEN_DIR="$HOME/agent-garden-code"
-mkdir -p "$GARDEN_DIR"
-cd "$GARDEN_DIR"
-npm install @fenton/ccwebui 2>/dev/null || true
-
 mkdir -p "$HOME/.claude"
 cat > "$HOME/.claude/settings.json" << EOF
 {
@@ -90,13 +73,39 @@ cat > "$HOME/.claude/settings.json" << EOF
 EOF
 echo -e "  ${GREEN}✓ 配置已写入${NC}"
 
+# 创建启动脚本（桌面快捷方式）
+GARDEN_DIR="$HOME/agent-garden-code"
+mkdir -p "$GARDEN_DIR"
+cd "$GARDEN_DIR"
+
+cat > "$GARDEN_DIR/启动花园.command" << 'CMDFILE'
+#!/bin/bash
+cd "$(dirname "$0")"
+export ANTHROPIC_BASE_URL="https://api.deepseek.com/anthropic"
+export ANTHROPIC_AUTH_TOKEN="REPLACE_KEY"
+export ANTHROPIC_MODEL="deepseek-v4-flash[1m]"
+echo "启动 Agent花园·Code..."
+open http://localhost:3000
+claude --url --dangerously-skip-permissions
+CMDFILE
+
+# 替换占位符为真实 Key
+sed -i '' "s/REPLACE_KEY/$DEEPSEEK_KEY/g" "$GARDEN_DIR/启动花园.command"
+chmod +x "$GARDEN_DIR/启动花园.command"
+
+# 也复制到桌面
+cp "$GARDEN_DIR/启动花园.command" "$HOME/Desktop/AgentGarden\ Code.command"
+chmod +x "$HOME/Desktop/AgentGarden\ Code.command"
+
+echo -e "  ${GREEN}✓ 启动器已创建${NC}"
+
 # 完成
 echo ""
 echo "╔══════════════════════════════════════════╗"
 echo "║    Agent花园 Code 安装完成！            ║"
 echo "╚══════════════════════════════════════════╝"
 echo ""
-echo "  运行: cd ~/agent-garden-code && npx @fenton/ccwebui -p 3000"
+echo "  双击桌面「AgentGarden Code.command」启动"
 echo ""
 echo "  📞 微信: yuhuashi7271 · 邮箱: contact@agent-garden.com"
 echo ""
