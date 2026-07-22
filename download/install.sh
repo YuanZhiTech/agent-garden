@@ -102,6 +102,9 @@ EOF
 
 mkdir -p "$HOME/.agent-garden"
 echo "{\"tier\":\"$TIER\"}" > "$HOME/.agent-garden/config.json"
+# 也写入隔离目录（garden-claude 可能切换 HOME）
+mkdir -p /tmp/garden-home/.agent-garden 2>/dev/null
+cp "$HOME/.agent-garden/config.json" /tmp/garden-home/.agent-garden/ 2>/dev/null
 
 echo -e "  ${GREEN}✓ 配置已写入${NC}"
 
