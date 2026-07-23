@@ -2,23 +2,23 @@
 echo MCP Installer for DuckDuckGo
 echo.
 echo Step 1: Checking settings.json...
-if exist "%USERPROFILE%\.claude\settings.json" (
-  echo Found settings.json
+set "FILE=%USERPROFILE%\.claude\settings.json"
+if exist "%FILE%" (
+  echo   Found settings.json
 ) else (
-  echo Creating settings.json...
+  echo   Creating new settings.json...
   if not exist "%USERPROFILE%\.claude" mkdir "%USERPROFILE%\.claude"
-  echo {} > "%USERPROFILE%\.claude\settings.json"
 )
 echo.
-echo Step 2: Writing MCP config...
-powershell -ExecutionPolicy Bypass -NoProfile -Command "& {$j='{""mcpServers"":{""duckduckgo"":{""command"":""npx"",""args"":[""-y"",""mcp-duckduckgo""]}}}'; $s=$env:USERPROFILE+'\.claude\settings.json'; if(!(test-path $s)){@{}|convertto-json|out-file $s -encoding utf8}; $c=gc $s -raw -encoding utf8|convertfrom-json; if(!$c.mcpServers){$c|add-member -name mcpServers -value @{} -membertype noteproperty}; ($j|convertfrom-json).mcpServers.psobject.properties|%{$c.mcpServers|add-member -name $_.name -value $_.value -membertype noteproperty -force}; $c|convertto-json -depth 10|out-file $s -encoding utf8; write-host '  OK - MCP config merged'}"
+echo Step 2: Installing MCP config...
+powershell -ExecutionPolicy Bypass -NoProfile -Command "& {$f=$env:USERPROFILE+'\.claude\settings.json'; $c=@{}; if(test-path $f){$c=gc $f -raw -Encoding UTF8|convertfrom-json}; if(!$c.mcpServers){$c|add-member -name mcpServers -value @{} -membertype noteproperty}; $c.mcpServers|add-member -name duckduckgo -value @{command='npx';args=@('-y','mcp-duckduckgo')} -membertype noteproperty -force; $c|convertto-json -depth 10|out-file $f -Encoding UTF8; write-host '  Config written successfully'}"
 if %errorlevel% equ 0 (
   echo.
   echo SUCCESS: DuckDuckGo MCP installed!
-  echo Restart Claude Code and try: search with DuckDuckGo
+  echo Restart Claude Code to use it.
 ) else (
   echo.
-  echo FAILED: Please close Claude Code/garden-code first, then run this again.
+  echo FAILED. Try: close Claude Code/garden-code, then run again.
 )
 echo.
 pause
