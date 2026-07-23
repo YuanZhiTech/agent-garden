@@ -1,29 +1,24 @@
 @echo off
-echo Installing MCP: DuckDuckGo...
+echo MCP Installer for DuckDuckGo
 echo.
-
-echo $j='{"mcpServers":{"duckduckgo":{"command":"npx","args":["-y","mcp-duckduckgo"]}}}' > "%temp%\mcp.ps1"
-echo $s=$env:USERPROFILE+\.claude\settings.json >> "%temp%\mcp.ps1"
-echo $d=[System.IO.Path]::GetDirectoryName($s) >> "%temp%\mcp.ps1"
-echo if(!(Test-Path $d)){mkdir $d | Out-Null} >> "%temp%\mcp.ps1"
-echo if(!(Test-Path $s)){@{}|ConvertTo-Json|Out-File $s -Encoding UTF8} >> "%temp%\mcp.ps1"
-echo $c=Get-Content $s -Raw -Encoding UTF8|ConvertFrom-Json >> "%temp%\mcp.ps1"
-echo $m=$j|ConvertFrom-Json >> "%temp%\mcp.ps1"
-echo if(!$c.mcpServers){$c|Add-Member -Name mcpServers -Value @{} -MemberType NoteProperty} >> "%temp%\mcp.ps1"
-echo $m.mcpServers.PSObject.Properties|%%{$c.mcpServers|Add-Member -Name $_.Name -Value $_.Value -MemberType NoteProperty -Force} >> "%temp%\mcp.ps1"
-echo $c|ConvertTo-Json -Depth 10|Set-Content $s -Encoding UTF8 >> "%temp%\mcp.ps1"
-echo Write-Host "DuckDuckGo MCP installed successfully" >> "%temp%\mcp.ps1"
-
-powershell -ExecutionPolicy Bypass -NoProfile -File "%temp%\mcp.ps1"
-
+echo Step 1: Checking settings.json...
+if exist "%USERPROFILE%\.claude\settings.json" (
+  echo Found settings.json
+) else (
+  echo Creating settings.json...
+  if not exist "%USERPROFILE%\.claude" mkdir "%USERPROFILE%\.claude"
+  echo {} > "%USERPROFILE%\.claude\settings.json"
+)
+echo.
+echo Step 2: Writing MCP config...
+powershell -ExecutionPolicy Bypass -NoProfile -Command "& {$j='{""mcpServers"":{""duckduckgo"":{""command"":""npx"",""args"":[""-y"",""mcp-duckduckgo""]}}}'; $s=$env:USERPROFILE+'\.claude\settings.json'; if(!(test-path $s)){@{}|convertto-json|out-file $s -encoding utf8}; $c=gc $s -raw -encoding utf8|convertfrom-json; if(!$c.mcpServers){$c|add-member -name mcpServers -value @{} -membertype noteproperty}; ($j|convertfrom-json).mcpServers.psobject.properties|%{$c.mcpServers|add-member -name $_.name -value $_.value -membertype noteproperty -force}; $c|convertto-json -depth 10|out-file $s -encoding utf8; write-host '  OK - MCP config merged'}"
 if %errorlevel% equ 0 (
   echo.
-  echo DuckDuckGo MCP installed! Restart Claude Code to use it.
+  echo SUCCESS: DuckDuckGo MCP installed!
+  echo Restart Claude Code and try: search with DuckDuckGo
 ) else (
   echo.
-  echo Install failed. Send the error above to ZhiLian.
+  echo FAILED: Please close Claude Code/garden-code first, then run this again.
 )
-
-del "%temp%\mcp.ps1" 2>nul
 echo.
 pause
