@@ -5,49 +5,38 @@ echo.
 echo   MCP: DuckDuckGo - 免费，零配置
 echo.
 
-set "SELF=%~f0"
-set "TMPFILE=%TEMP%\mcp-duckduckgo.json"
+:: 生成 PowerShell 安装脚本
+set "PSFILE=%TEMP%\mcp-install.ps1"
+> "%PSFILE%" (
+  echo $json = '{"mcpServers":{"duckduckgo":{"command":"npx","args":["-y","mcp-duckduckgo"]}}}'
+  echo $settings = $env:USERPROFILE + "\.claude\settings.json"
+  echo $mcpDir = $env:USERPROFILE + "\.agent-garden\mcp"
+  echo $parent = [System.IO.Path]::GetDirectoryName^($settings^)
+  echo if ^( -not ^(Test-Path $mcpDir^) ^) { New-Item -ItemType Directory -Path $mcpDir -Force }
+  echo if ^( -not ^(Test-Path $parent^) ^) { New-Item -ItemType Directory -Path $parent -Force }
+  echo if ^( -not ^(Test-Path $settings^) ^) { @{} ^| ConvertTo-Json ^| Set-Content $settings -Encoding UTF8 }
+  echo $config = Get-Content $settings -Raw -Encoding UTF8 ^| ConvertFrom-Json
+  echo $mcpJson = $json ^| ConvertFrom-Json
+  echo if ^( -not $config.mcpServers ^) { $config ^| Add-Member -Name "mcpServers" -Value @{} -MemberType NoteProperty }
+  echo $mcpJson.mcpServers.PSObject.Properties ^| ForEach-Object { $config.mcpServers ^| Add-Member -Name $_.Name -Value $_.Value -MemberType NoteProperty -Force }
+  echo $config ^| ConvertTo-Json -Depth 10 ^| Set-Content $settings -Encoding UTF8
+  echo Write-Host "OK"
+)
 
-for /f "usebackq delims=" %%A in (`findstr /n "===MCP_CONFIG===" "%SELF%"`) do set "LINE=%%A"
-for /f "tokens=1 delims=:" %%B in ("%LINE%") do set /a "START=%%B"
-set /a "START+=1"
+:: 执行安装
+powershell -ExecutionPolicy Bypass -NoProfile -File "%PSFILE%"
 
-more +%START% "%SELF%" > "%TMPFILE%"
-
-set "MCP_DIR=%USERPROFILE%\.agent-garden\mcp"
-if not exist "%MCP_DIR%" mkdir "%MCP_DIR%"
-copy "%TMPFILE%" "%MCP_DIR%\duckduckgo.json" >nul
-
-set "SETTINGS=%USERPROFILE%\.claude\settings.json"
-if not exist "%USERPROFILE%\.claude" mkdir "%USERPROFILE%\.claude"
-if not exist "%SETTINGS%" echo {} > "%SETTINGS%"
-
-echo 正在写入配置...
-powershell -ExecutionPolicy Bypass -NoProfile -Command "
-  $s = Get-Content """%SETTINGS%""" -Raw -Encoding UTF8 | ConvertFrom-Json;
-  $m = Get-Content """%TMPFILE%""" -Raw | ConvertFrom-Json;
-  if (-not $s.mcpServers) { $s | Add-Member -Name """mcpServers""" -Value @{} -MemberType NoteProperty };
-  $m.mcpServers.PSObject.Properties | %%{ $s.mcpServers | Add-Member -Name $_.Name -Value $_.Value -MemberType NoteProperty -Force };
-  $s | ConvertTo-Json -Depth 10 | Set-Content """%SETTINGS%""" -Encoding UTF8
-"
+:: 判断结果
 if %errorlevel% equ 0 (
   echo.
-  echo   DuckDuckGo 安装完成！重启 Claude Code 生效
+  echo   DuckDuckGo 安装成功！重启 Claude Code 即可使用
+  echo   重启后试试问它："用 DuckDuckGo 搜索今天的新闻"
 ) else (
   echo.
-  echo   安装失败，请重试
+  echo   ⚠ 安装出错，请把截图发给智联
 )
-del "%TMPFILE%" >nul 2>&1
+
+:: 清理
+del "%PSFILE%" 2>nul
 echo.
 pause
-exit /b
-
-===MCP_CONFIG===
-{
-  "mcpServers": {
-    "duckduckgo": {
-      "command": "npx",
-      "args": ["-y", "mcp-duckduckgo"]
-    }
-  }
-}
