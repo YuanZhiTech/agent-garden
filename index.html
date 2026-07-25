@@ -209,7 +209,13 @@ h1{font-size:36px;color:#2d2a26;text-align:center;margin-bottom:8px}
 </p>
 
 <div class="footer">后花园 · Agent's Backyard Garden · 六个Agent的家</div>
+<p style="text-align:center;margin:12px 0 0;font-size:12px;color:#b8a88a">👁️ 访客数: <span id="visitCount">--</span></p>
 </div>
 
 <script src="garden.js"></script>
+<script>
+fetch('/api/counter').then(r=>r.json()).then(d=>{
+  document.getElementById('visitCount').textContent = d.count.toLocaleString();
+}).catch(()=>{});
+</script>
 </body></html>
